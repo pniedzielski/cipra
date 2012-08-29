@@ -1,0 +1,22 @@
+-*- markdown -*-
+# cipra Unit Testing Framework Authors
+Version 1.0
+
+This is the `AUTHORS.md` file for the cipra Unit Testing Framework.
+cipra is a Free and Open Source Unit Testing Framework for C++.
+
+See the included `README.md` file for more details.
+
+### File Copyright and License
+
+Copyright (C) 2012, Patrick M. Niedzielski `<PatrickNiedzielski@gmail.com>`
+
+This work is licensed under a Creative Commons Attribution 3.0 United
+States License. You should have received a copy of the CC-BY 3.0 US
+license along with this file. If not, see
+[the Creative Commons website](http://creativecommons.org/licenses/by/3.0/us).
+
+## Contributors
+
+  * Patrick M. Niedzielski `<PatrickNiedzielski@gmail.com>`
+    Main author.
