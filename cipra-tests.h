@@ -49,7 +49,32 @@
 
 namespace cipra {
 
-    namespace details {
+    /**
+     * The base class for any test fixtures.  To use cipra, you should
+     * derive from this class.
+     */
+    template<class derivedT>
+    class fixture {
+    public:
+        int run()
+        {
+            std::cout << cipra::tap13_header();
+            static_cast<derivedT*>(this)->test();
+            return succeeded ? 0 : 1;
+        }
+
+    private:
+        bool succeeded;
+
+        void test()
+        {
+            // If there's no test defined by the user, this will be
+            // defaulted to.
+            plan(0);
+            std::cout << cipra::tap13_diagnostic("no tests were defined")
+                      << std::endl;
+        }
+
         std::string current_exception_name()
         {
 #ifdef CIPRA_CXA_ABI
@@ -70,102 +95,117 @@ namespace cipra {
 #endif
             return std::string("(unknown type)");
         }
-    }
 
-    template <typename funcT>
-    void ok(funcT expr, std::string name)
-    {
-        try {
-            if (expr()) {
+    protected:
+        fixture() : succeeded(true)
+        {}
+
+        fixture(const fixture<derivedT> &t) : succeeded(t.succeeded)
+        {}
+
+        void plan(int total)
+        {
+            std::cout << tap13_plan(total) << std::endl;
+        }
+        
+
+        template <typename funcT>
+        void ok(funcT expr, std::string name)
+        {
+            try {
+                if (expr()) {
+                    std::cout << tap13_ok(name);
+                    return;
+                } else {
+                    succeeded = false;
+                    std::cout << tap13_not_ok(name);
+                    return;
+                }
+            } catch (...) { // don't count exception as ok
+                succeeded = false;
+                std::cout << tap13_not_ok(name)
+                          << "# got exception of type "
+                          << current_exception_name()
+                          << std::endl;
+            }
+        }
+
+        template<typename funcT>
+        void throws(funcT expr, std::string name)
+        {
+            try {
+                (void)expr();
+            } catch (...) {
+                // we expect an exception
                 std::cout << tap13_ok(name);
                 return;
-            } else {
-                std::cout << tap13_not_ok(name);
+            }
+            // no exception thrown
+            succeeded = false;
+            std::cout << tap13_not_ok(name)
+                      << "# got no exception" << std::endl;
+        }
+
+        template<typename exceptionT, typename funcT>
+        void throws(funcT expr, std::string name)
+        {
+            try {
+                (void)expr();
+            } catch (exceptionT &e) {
+                // we expect this exception.
+                std::cout << tap13_ok(name);
+                return;
+            } catch (...) {
+                // an exception was thrown, but we don't know what.
+                succeeded = false;
+                std::cout << tap13_not_ok(name)
+                          << "# got exception of type "
+                          << current_exception_name()
+                          << std::endl;
                 return;
             }
-        } catch (...) { // don't count exception as ok
+            // no exception thrown
+            succeeded = false;
             std::cout << tap13_not_ok(name)
-                      << "# got exception of type "
-                      << details::current_exception_name()
-                      << std::endl;
+                      << "# got no exception" << std::endl;
         }
-    }
 
-//    template <typename funcT, typename T>
-//    void is(funcT 
-            
-
-
-    template<typename funcT>
-    void throws(funcT expr, std::string name)
-    {
-        try {
-            (void)expr();
-        } catch (...) {
-            // we expect an exception
+        template<typename funcT>
+        void nothrows(funcT expr, std::string name)
+        {
+            try {
+                (void)expr();
+            } catch (...) {
+                // exception not expected
+                succeeded = false;
+                std::cout << tap13_not_ok(name)
+                          << "# got exception of type "
+                          << current_exception_name()
+                          << std::endl;
+                return;
+            }
+            // no exception thrown
             std::cout << tap13_ok(name);
-            return;
         }
-        // no exception thrown
-        std::cout << tap13_not_ok(name)
-                  << "# got no exception" << std::endl;
-    }
 
-    template<typename exceptionT, typename funcT>
-    void throws(funcT expr, std::string name)
-    {
-        try {
-            (void)expr();
-        } catch (exceptionT &e) {
-            // we expect this exception.
+        template<typename exceptionT, typename funcT>
+        void nothrows(funcT expr, std::string name)
+        {
+            try {
+                (void)expr();
+            } catch (exceptionT &e) {
+                // we don't want this exception
+                succeeded = false;
+                std::cout << tap13_not_ok(name);
+                return;
+            } catch (...) {
+                // this is okay.  catch exception and fall through to
+                // below
+            }
+            // no exception thrown
             std::cout << tap13_ok(name);
-            return;
-        } catch (...) {
-            // an exception was thrown, but we don't know what.
-            std::cout << tap13_not_ok(name)
-                      << "# got exception of type "
-                      << details::current_exception_name()
-                      << std::endl;
-            return;
         }
-        // no exception thrown
-        std::cout << tap13_not_ok(name)
-                  << "# got no exception" << std::endl;
-    }
-
-    template<typename funcT>
-    void nothrows(funcT expr, std::string name)
-    {
-        try {
-            (void)expr();
-        } catch (...) {
-            // exception not expected
-            std::cout << tap13_not_ok(name)
-                      << "# got exception of type "
-                      << details::current_exception_name()
-                      << std::endl;
-            return;
-        }
-        // no exception thrown
-        std::cout << tap13_ok(name);
-    }
-
-    template<typename exceptionT, typename funcT>
-    void nothrows(funcT expr, std::string name)
-    {
-        try {
-            (void)expr();
-        } catch (exceptionT &e) {
-            // we don't want this exception
-            std::cout << tap13_not_ok(name);
-            return;
-        } catch (...) {
-            // this is okay.  catch exception and fall through to
-            // below
-        }
-        // no exception thrown
-        std::cout << tap13_ok(name);
-    }
+    };
 }
 
 #endif

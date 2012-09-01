@@ -37,6 +37,7 @@
 #define CIPRA_TAP13_H
 
 #include <string>
+#include <sstream>
 #include <iostream>
 #include <vector>
 #include <map>
@@ -49,6 +50,18 @@ namespace cipra {
     std::string tap13_header()
     {
         return std::string("TAP version 13\n");
+    }
+
+    std::string tap13_plan(int total)
+    {
+        std::stringstream out;
+        out << "1.." << total;
+        return out.str();
+    }
+    
+    std::string tap13_diagnostic(std::string text)
+    {
+        return "# " + text;
     }
 
     std::string tap13_ok(std::string name = "")
@@ -64,6 +77,74 @@ namespace cipra {
             ((name != "") ? "- " + name : "") +
             "\n";
     }
+
+/*    struct tap13_yamlish {
+        std::string message;
+        std::string severity;
+        std::string source;
+        std::chrono::time_point<std::chrono::system_clock> datetime;
+        std::string file;
+        int line;
+        std::string name;
+        struct {
+            std::string type;
+            std::string value;
+        } actual, expected;
+        std::string display;
+        std::map<std::string, std::string> dump;
+        struct {
+            std::string name;
+            std::string what;
+        } error;
+        std::vector<std::string> backtrace;
+    };
+
+    namespace details {
+        std::string time_point_to_string(
+            std::chrono::time_point<std::chrono::system_clock> t)
+        {
+            char datetime_string[] = "YYYY-MM-DDThh:mm:ss+0000";
+            std::time_t t =
+                std::chrono::system_clock::to_time_t(yaml.datetime);
+            std::strftime(datetime_string, sizeof datetime_string,
+                          "%FT%T%z", std::localtime(&t));
+            return std::string(datetime_string);
+        }
+
+        std::string value_to_string(std::string type, std::string val)
+        {
+            return std::
+    }
+
+    std::string tap13_yamlish_output(tap13_yamlish yaml)
+    {
+        std::string output("    ---\n");
+        if (yaml.message != "") {
+            output += "    message: " + yaml.message + "\n";
+        }
+        if (yaml.severity != "") {
+            output += "    severity: " + yaml.severity + "\n"
+        }
+        if (yaml.source != "") {
+            output += "    source: " + yaml.source + "\n";
+        }
+        if (yaml.datetime != std::chrono::time_point
+            <std::chrono::system_clock>()) {
+            output += "    datetime: " +
+                time_point_to_string(yaml.datetime) + "\n";
+        }
+        if (yaml.file != "") {
+            output += "    file: " + yaml.file + "\n";
+        }
+        if (yaml.line != 0) {
+            output += "    line: " + yaml.line + "\n";
+        }
+        if (yaml.name != "") {
+            output += "    name: " + yaml.name + "\n";
+        }
+        if (yaml.file != "") {
+            output += "    file: " + yaml.file + "\n";
+            } */
 
 }
 

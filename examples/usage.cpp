@@ -34,34 +34,39 @@
  */
 
 // Uncomment on GCC and other compilers that support abi:: functions.
-//#define CIPRA_CXA_ABI
+#define CIPRA_CXA_ABI
 #include "../cipra-tap13.h"
 #include "../cipra-tests.h"
 
 int main(int argc, char* argv[])
 {
-    cipra::tap13_header();
+    struct my_fixture : cipra::fixture<my_fixture> {
+        void test() // define this function to run tests
+        {
+            plan(13);
 
-    cipra::ok([]() { return true; }, "ok() succeeds on true");
-    cipra::ok([]() { return false; }, "ok() fails on false");
-    cipra::ok([]() { throw 0; return true; }, "ok() fails on throw");
+            ok([]() { return true; }, "ok() succeeds on true");
+            ok([]() { return false; }, "ok() fails on false");
+            ok([]() { throw 0; return true; }, "ok() fails on throw");
 
-    cipra::throws([]() { throw 0; }, "throws() detects int throw");
-    cipra::throws([]() { }, "throws() fails on no throw");
+            throws([]() { throw 0; }, "throws() detects int throw");
+            throws([]() { }, "throws() fails on no throw");
 
-    cipra::throws<int>([]() { throw 0; }, "throws<int>() detects int throw");
-    cipra::throws<int>([]() { throw 'a'; },
+            throws<int>([]() { throw 0; }, "throws<int>() detects int throw");
+            throws<int>([]() { throw 'a'; },
                        "throws<int>() fails on char throw");
-    cipra::throws<int>([]() { }, "throws<int>() fails on no throw");
+            throws<int>([]() { }, "throws<int>() fails on no throw");
 
-    cipra::nothrows([]() { }, "nothrows() accepts no throw");
-    cipra::nothrows([]() { throw 0; }, "nothrows() fails on int throw");
+            nothrows([]() { }, "nothrows() accepts no throw");
+            nothrows([]() { throw 0; }, "nothrows() fails on int throw");
 
-    cipra::nothrows<int>([]() { throw 'a'; },
+            nothrows<int>([]() { throw 'a'; },
                          "nothrows<int>() accepts char throw");
-    cipra::nothrows<int>([]() {}, "nothrows<int>() accepts no throw");
-    cipra::nothrows<int>([]() { throw 0; },
+            nothrows<int>([]() {}, "nothrows<int>() accepts no throw");
+            nothrows<int>([]() { throw 0; },
                          "nothrows<int>() fails on int throw.");
+        }
+    } test;
 
-    return 0;
+    return test.run();
 }
