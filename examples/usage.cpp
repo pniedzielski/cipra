@@ -38,12 +38,19 @@
 #include "../cipra-tap13.h"
 #include "../cipra-tests.h"
 
+void
+cant_convert_void_to_bool()
+{
+}
+
 int main(int argc, char* argv[])
 {
-    struct my_fixture : cipra::fixture<my_fixture> {
-        void test() // define this function to run tests
+    struct my_fixture : cipra::fixture {
+        virtual void test() override // define this function to run tests
         {
             plan(13);
+
+            //ok(&cant_convert_void_to_bool, "Can't convert void to bool");
 
             ok([]() { return true; }, "ok() succeeds on true");
             ok([]() { return false; }, "ok() fails on false");
@@ -64,7 +71,7 @@ int main(int argc, char* argv[])
                          "nothrows<int>() accepts char throw");
             nothrows<int>([]() {}, "nothrows<int>() accepts no throw");
             nothrows<int>([]() { throw 0; },
-                         "nothrows<int>() fails on int throw.");
+                         "nothrows<int>() fails on int throw");
         }
     } test;
 
