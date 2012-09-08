@@ -52,160 +52,278 @@ namespace cipra {
     /**
      * The base class for any test fixtures.  To use cipra, you should
      * derive from this class.
+     *
+     * @version 1.0
+     * @author  Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+     * @date    2012-09-07
+     * @since   1.0
+     *
+     * @note For compilers that support the Itanium ABI and have the
+     * associated functions in the `abi::` namespace, define the
+     * preprocessor token `CIPRA_CXA_ABI` before the `cipra.h` header
+     * is included to take advantage of these functions to provide
+     * better diagnostics of exceptions that are thrown by test
+     * expressions.  A conforming compiler should provide
+     * `abi::__cxa_current_exception_type()` and `abi::__cxa_demangle`
+     * in the header file `cxxabi.h`.  This flag does not affect test
+     * behavior outside of exception diagnostics.
      */
-    template<class derivedT>
     class fixture {
     public:
-        int run()
-        {
-            std::cout << cipra::tap13_header();
-            static_cast<derivedT*>(this)->test();
-            return succeeded ? 0 : 1;
-        }
-
-    private:
-        bool succeeded;
-
-        void test()
-        {
-            // If there's no test defined by the user, this will be
-            // defaulted to.
-            plan(0);
-            std::cout << cipra::tap13_diagnostic("no tests were defined")
-                      << std::endl;
-        }
-
-        std::string current_exception_name()
-        {
-#ifdef CIPRA_CXA_ABI
-            // with this flag, we can use abi:: functions from GCC and
-            // others to determine more about the exception.
-            int success_code = 0;
-            char *realname = abi::__cxa_demangle(
-                abi::__cxa_current_exception_type()->name(),
-                0,
-                0,
-                &success_code);
-            if (success_code == 0) { // success
-                std::string return_realname(realname);
-                std::free(realname);
-                return return_realname;
-            }
-            // else, use what other compilers use
-#endif
-            return std::string("(unknown type)");
-        }
+        /**
+         * Run this test fixture and produce output from the
+         * user-defined `test()` method.  Returns a value suitable for
+         * the return value of the program's `main()` function.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-02
+         * @since  1.0
+         *
+         * @return The program's return value to the operating system.
+         * @retval 0 Successful test execution.
+         *
+         * @note Calling this function will implicitly call your
+         * `test()` method.  It runs additional initialization and
+         * cleanup code for your test fixture.
+         */
+        inline int run();
 
     protected:
-        fixture() : succeeded(true)
-        {}
+        /**
+         * Construct a new test fixture.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-02
+         * @since  1.0
+         */
+        inline fixture();
+        /**
+         * Construct a new test fixture from an existing one.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-02
+         * @since  1.0
+         */
+        inline fixture(const fixture &);
 
-        fixture(const fixture<derivedT> &t) : succeeded(t.succeeded)
-        {}
-
-        void plan(int total)
-        {
-            std::cout << tap13_plan(total) << std::endl;
-        }
+        /**
+         * Sets the number of tests you plan to have run by the end of
+         * this fixture.  This is used as a checksum after all tests
+         * are run.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-08
+         * @since  1.0
+         *
+         * @param [in] total The number of tests you want to run.
+         */
+        inline void plan(int total);
         
-
-        template <typename funcT>
-        void ok(funcT expr, std::string name)
-        {
-            try {
-                if (expr()) {
-                    std::cout << tap13_ok(name);
-                    return;
-                } else {
-                    succeeded = false;
-                    std::cout << tap13_not_ok(name);
-                    return;
-                }
-            } catch (...) { // don't count exception as ok
-                succeeded = false;
-                std::cout << tap13_not_ok(name)
-                          << "# got exception of type "
-                          << current_exception_name()
-                          << std::endl;
-            }
-        }
-
+        /**
+         * Assert that some expression returns a value that when
+         * converted to a `bool` will be `true`.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-07
+         * @since  1.0
+         *
+         * @tparam funcT The type of the object provided in the `expr`
+         * argument.
+         *
+         * @param [in] expr Some object providing the `operator()`
+         * that will return a value convertable to `bool`.  This
+         * expression will be your assertion expression.
+         * @param [in] name A user-readable description of this test
+         * assertion.
+         *
+         * @note `expr` can't simply be a boolean value indicating
+         * true or false.  In order to catch exceptions thrown by the
+         * expression, we need to run the expression inside a
+         * `try`-`catch` block.  If `expr` were a boolean value, the
+         * expression would already have been evaluated and the
+         * exception already thrown by the time the function would
+         * begin.
+         */
         template<typename funcT>
-        void throws(funcT expr, std::string name)
-        {
-            try {
-                (void)expr();
-            } catch (...) {
-                // we expect an exception
-                std::cout << tap13_ok(name);
-                return;
-            }
-            // no exception thrown
-            succeeded = false;
-            std::cout << tap13_not_ok(name)
-                      << "# got no exception" << std::endl;
-        }
-
-        template<typename exceptionT, typename funcT>
-        void throws(funcT expr, std::string name)
-        {
-            try {
-                (void)expr();
-            } catch (exceptionT &e) {
-                // we expect this exception.
-                std::cout << tap13_ok(name);
-                return;
-            } catch (...) {
-                // an exception was thrown, but we don't know what.
-                succeeded = false;
-                std::cout << tap13_not_ok(name)
-                          << "# got exception of type "
-                          << current_exception_name()
-                          << std::endl;
-                return;
-            }
-            // no exception thrown
-            succeeded = false;
-            std::cout << tap13_not_ok(name)
-                      << "# got no exception" << std::endl;
-        }
-
+        void ok(funcT expr, std::string name);
+        /**
+         * Assert that some expression throws an exception of any type.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-07
+         * @since  1.0
+         *
+         * @tparam funcT The type of the object provided in the `expr`
+         * argument.
+         *
+         * @param [in] expr Some object providing the `operator()`.
+         * This expression will be your assertion expression.
+         * @param [in] name A user-readable description of this test
+         * assertion.
+         *
+         * @note `expr` can't simply be a boolean value indicating
+         * true or false.  In order to catch exceptions thrown by the
+         * expression, we need to run the expression inside a
+         * `try`-`catch` block.  If `expr` were a boolean value, the
+         * expression would already have been evaluated and the
+         * exception already thrown by the time the function would
+         * begin.
+         */
         template<typename funcT>
-        void nothrows(funcT expr, std::string name)
-        {
-            try {
-                (void)expr();
-            } catch (...) {
-                // exception not expected
-                succeeded = false;
-                std::cout << tap13_not_ok(name)
-                          << "# got exception of type "
-                          << current_exception_name()
-                          << std::endl;
-                return;
-            }
-            // no exception thrown
-            std::cout << tap13_ok(name);
-        }
-
+        void throws(funcT expr, std::string name);
+        /**
+         * Assert that some expression throws an exception of a
+         * specified type.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-07
+         * @since  1.0
+         *
+         * @tparam exceptionT The type of the exception that running
+         * `expr` should cause.
+         * @tparam funcT The type of the object provided in the `expr`
+         * argument.
+         *
+         * @param [in] expr Some object providing the `operator()`.
+         * This expression will be your assertion expression.
+         * @param [in] name A user-readable description of this test
+         * assertion.
+         *
+         * @note `expr` can't simply be a boolean value indicating
+         * true or false.  In order to catch exceptions thrown by the
+         * expression, we need to run the expression inside a
+         * `try`-`catch` block.  If `expr` were a boolean value, the
+         * expression would already have been evaluated and the
+         * exception already thrown by the time the function would
+         * begin.
+         */
         template<typename exceptionT, typename funcT>
-        void nothrows(funcT expr, std::string name)
-        {
-            try {
-                (void)expr();
-            } catch (exceptionT &e) {
-                // we don't want this exception
-                succeeded = false;
-                std::cout << tap13_not_ok(name);
-                return;
-            } catch (...) {
-                // this is okay.  catch exception and fall through to
-                // below
-            }
-            // no exception thrown
-            std::cout << tap13_ok(name);
-        }
+        void throws(funcT expr, std::string name);
+        /**
+         * Assert that some expression does not throw an exception of
+         * any type.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-07
+         * @since  1.0
+         *
+         * @tparam funcT The type of the object provided in the `expr`
+         * argument.
+         *
+         * @param [in] expr Some object providing the `operator()`.
+         * This expression will be your assertion expression.
+         * @param [in] name A user-readable description of this test
+         * assertion.
+         *
+         * @note `expr` can't simply be a boolean value indicating
+         * true or false.  In order to catch exceptions thrown by the
+         * expression, we need to run the expression inside a
+         * `try`-`catch` block.  If `expr` were a boolean value, the
+         * expression would already have been evaluated and the
+         * exception already thrown by the time the function would
+         * begin.
+         */
+        template<typename funcT>
+        void nothrows(funcT expr, std::string name);
+        /**
+         * Assert that some expression does not throw an exception of
+         * a specified type.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-07
+         * @since  1.0
+         *
+         * @tparam exceptionT The type of the exception that running
+         * `expr` should not cause.
+         * @tparam funcT The type of the object provided in the `expr`
+         * argument.
+         *
+         * @param [in] expr Some object providing the `operator()`.
+         * This expression will be your assertion expression.
+         * @param [in] name A user-readable description of this test
+         * assertion.
+         *
+         * @note `expr` can't simply be a boolean value indicating
+         * true or false.  In order to catch exceptions thrown by the
+         * expression, we need to run the expression inside a
+         * `try`-`catch` block.  If `expr` were a boolean value, the
+         * expression would already have been evaluated and the
+         * exception already thrown by the time the function would
+         * begin.
+         */
+        template<typename exceptionT, typename funcT>
+        void nothrows(funcT expr, std::string name);
+
+    private:
+        /**
+         * Implements the ok() method.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-08
+         * @since  1.0
+         *
+         * @tparam funcT `expr`'s type
+         *
+         * @param [in] expr Your function
+         * @param [in] name Test name
+         *
+         * @pre `decltype(expr())` is convertable to `bool`
+         */
+        template<typename funcT>
+        void ok_impl(funcT &expr, std::string &name, std::true_type);
+        /**
+         * Dummy method for if `expr()` cannot be converted to a
+         * boolean value.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-08
+         * @since  1.0
+         *
+         * @tparam funcT `expr`'s type
+         *
+         * @param [in] expr Your function
+         * @param [in] name Test name
+         *
+         * @pre `decltype(expr())` is not convertable to `bool`.
+         */
+        template<typename funcT>
+        void ok_impl(funcT &expr, std::string &name, std::false_type);
+        
+        /**
+         * Override this method with your test cases.  By default, no
+         * tests are defined.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-08
+         * @since  1.0
+         */
+        inline virtual void test();
+
+        /**
+         * Find out the name of the type of the current exception that
+         * was thrown.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-07
+         * @since  1.0
+         *
+         * @return A `std::string` that contains the name of the type
+         * that was thrown, or the string "(unknown type)" if the
+         * compiler does not give us the resources to figure out the
+         * true name.
+         *
+         * @note This function is only able to determine exact names
+         * if `CIPRA_CXA_ABI` is defined.
+         *
+         * @deprecated Don't use this in future versions.  We'll
+         * switch to using the YAMLish blocks in the TAP output.
+         */
+        inline std::string current_exception_name();
+
+        bool succeeded; ///< Whether all the tests succeeded.
     };
 }
+
+#include "cipra-tests.inl"
 
 #endif
