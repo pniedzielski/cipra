@@ -40,8 +40,7 @@
 
 #include <string>
 #include <iostream>
-#include <cstdlib>
-#include <cstring>
+#include <type_traits>
 
 #ifdef CIPRA_CXA_ABI
 #  include <cxxabi.h>
