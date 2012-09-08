@@ -41,7 +41,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include <chrono>
+//#include <chrono>
 #include <ctime>
 #include <utility>
 
@@ -67,15 +67,13 @@ namespace cipra {
     std::string tap13_ok(std::string name = "")
     {
         return std::string("ok ") +
-            ((name != "") ? "- " + name : "") +
-            "\n";
+            ((name != "") ? "- " + name : "");
     }
 
     std::string tap13_not_ok(std::string name = "")
     {
         return std::string("not ok ") +
-            ((name != "") ? "- " + name : "") +
-            "\n";
+            ((name != "") ? "- " + name : "");
     }
 
 /*    struct tap13_yamlish {
