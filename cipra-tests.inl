@@ -85,6 +85,15 @@ namespace cipra {
         std::cout << tap13_plan(total) << std::endl;
     }
 
+    void fixture::diag(std::string message)
+    {
+        std::cerr << tap13_diagnostic(message) << std::endl;
+    }
+    void fixture::note(std::string message)
+    {
+        std::cout << tap13_diagnostic(message) << std::endl;
+    }
+
     // use this one for successful static assert
     // we have to use this because there isn't function partial
     // specialization.

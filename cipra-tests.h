@@ -117,6 +117,27 @@ namespace cipra {
          * @param [in] total The number of tests you want to run.
          */
         inline void plan(int total);
+
+        /**
+         * Print a diagnostic message to the test output.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-26
+         * @since  1.0
+         *
+         * @param [in] message A string to print to the test output.
+         */
+        void diag(std::string message);
+        /**
+         * Print out a non-diagnostic note to the test output.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-26
+         * @since  1.0
+         *
+         * @param [in] message A string to print to the test output.
+         */
+        void note(std::string message);
         
         /**
          * Assert that some expression returns a value that when
