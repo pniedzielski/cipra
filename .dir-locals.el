@@ -35,4 +35,11 @@
 ((nil . ((fill-column . 70)
          (tab-width . 8)))
  (c++-mode . ((c-file-style . "Stroustrup")
-              (indent-tabs-mode . nil))))
+              (indent-tabs-mode . nil)
+              (eval . (progn
+                        (setq doxymacs-doxygen-dirs
+                              `(("cipra/"
+                                 "doc/cipra.xml"
+                                 ,(concat "file://"
+                                         (file-name-directory (buffer-file-name))
+                                         "doc/html")))))))))
