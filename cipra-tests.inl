@@ -67,7 +67,7 @@ namespace cipra {
 
     int fixture::run()
     {
-        std::cout << cipra::tap13_header();
+        std::cout << cipra::tap13::header() << std::endl;
         test();
         return succeeded ? 0 : 1;
     }
@@ -82,16 +82,16 @@ namespace cipra {
 
     void fixture::plan(int total)
     {
-        std::cout << tap13_plan(total) << std::endl;
+        std::cout << tap13::plan(total) << std::endl;
     }
 
     void fixture::diag(std::string message)
     {
-        std::cerr << tap13_diagnostic(message) << std::endl;
+        std::cerr << tap13::diagnostic(message) << std::endl;
     }
     void fixture::note(std::string message)
     {
-        std::cout << tap13_diagnostic(message) << std::endl;
+        std::cout << tap13::diagnostic(message) << std::endl;
     }
 
     // use this one for successful static assert
@@ -102,18 +102,18 @@ namespace cipra {
     {
         try {
             if (expr()) {
-                std::cout << tap13_ok(name) << std::endl;
+                std::cout << tap13::ok(0, name) << std::endl;
                 return;
             } else {
                 succeeded = false;
-                std::cout << tap13_not_ok(name) << std::endl;
+                std::cout << tap13::not_ok(0, name) << std::endl;
                 return;
             }
         } catch (...) { // don't count exception as ok
             succeeded = false;
-            std::cout << tap13_not_ok(name) << std::endl
-                      << tap13_diagnostic("got exception of type " +
-                                          current_exception_name())
+            std::cout << tap13::not_ok(0, name) << std::endl
+                      << tap13::diagnostic("got exception of type " +
+                                           current_exception_name())
                       << std::endl;
         }
     }
@@ -150,13 +150,13 @@ namespace cipra {
             (void)expr();
         } catch (...) {
             // we expect an exception
-            std::cout << tap13_ok(name) << std::endl;
+            std::cout << tap13::ok(0, name) << std::endl;
             return;
         }
         // no exception thrown
         succeeded = false;
-        std::cout << tap13_not_ok(name) << std::endl
-                  << tap13_diagnostic("got no exception")
+        std::cout << tap13::not_ok(0, name) << std::endl
+                  << tap13::diagnostic("got no exception")
                   << std::endl;
     }
 
@@ -167,21 +167,21 @@ namespace cipra {
             (void)expr();
         } catch (exceptionT &e) {
             // we expect this exception.
-            std::cout << tap13_ok(name) << std::endl;
+            std::cout << tap13::ok(0, name) << std::endl;
             return;
         } catch (...) {
             // an exception was thrown, but we don't know what.
             succeeded = false;
-            std::cout << tap13_not_ok(name) << std::endl
-                      << tap13_diagnostic("got exception of type " +
-                                          current_exception_name())
+            std::cout << tap13::not_ok(0, name) << std::endl
+                      << tap13::diagnostic("got exception of type " +
+                                           current_exception_name())
                       << std::endl;
             return;
         }
         // no exception thrown
         succeeded = false;
-        std::cout << tap13_not_ok(name) << std::endl
-                  << tap13_diagnostic("got no exception")
+        std::cout << tap13::not_ok(0, name) << std::endl
+                  << tap13::diagnostic("got no exception")
                   << std::endl;
     }
 
@@ -193,14 +193,14 @@ namespace cipra {
         } catch (...) {
             // exception not expected
             succeeded = false;
-            std::cout << tap13_not_ok(name) << std::endl
-                      << tap13_diagnostic("got exception of type " +
-                                          current_exception_name())
+            std::cout << tap13::not_ok(0, name) << std::endl
+                      << tap13::diagnostic("got exception of type " +
+                                           current_exception_name())
                       << std::endl;
             return;
         }
         // no exception thrown
-        std::cout << tap13_ok(name) << std::endl;
+        std::cout << tap13::ok(0, name) << std::endl;
     }
 
     template<typename exceptionT, typename funcT>
@@ -211,14 +211,14 @@ namespace cipra {
         } catch (exceptionT &e) {
             // we don't want this exception
             succeeded = false;
-            std::cout << tap13_not_ok(name) << std::endl;
+            std::cout << tap13::not_ok(0, name) << std::endl;
             return;
         } catch (...) {
             // this is okay.  catch exception and fall through to
             // below
         }
         // no exception thrown
-        std::cout << tap13_ok(name) << std::endl;
+        std::cout << tap13::ok(0, name) << std::endl;
     }
 
     void fixture::test()
@@ -226,7 +226,7 @@ namespace cipra {
         // If there's no test defined by the user, this will be
         // defaulted to.
         plan(0);
-        std::cout << cipra::tap13_diagnostic("no tests were defined")
+        std::cout << tap13::diagnostic("no tests were defined")
                   << std::endl;
     }
 

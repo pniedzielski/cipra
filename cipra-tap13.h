@@ -37,113 +37,194 @@
 #define CIPRA_TAP13_H
 
 #include <string>
-#include <sstream>
 #include <iostream>
-#include <vector>
-#include <map>
-//#include <chrono>
-#include <ctime>
-#include <utility>
+#include <memory>
 
 namespace cipra {
+    namespace tap13 {
 
-    std::string tap13_header()
-    {
-        return std::string("TAP version 13\n");
+        /**
+         * @internal
+         * Implementation of the iostream manipulators for TAP13
+         * output.  This should not be documented in the Doxygen
+         * output unless the internal flag is set in the Doxyfile.  It
+         * usually won't be, but if it is, don't be surprised if this
+         * section has minimal documentation.
+         */
+        namespace details {
+            /**
+             * @private
+             * A base class for classes that know how to print some
+             * TAP13 output to an iostream.
+             *
+             * @version 1.0
+             * @author  Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+             * @date    2012-09-30
+             * @since   1.0
+             */
+            class output_helper {
+            public:
+                /**
+                 * Prints the TAP13 output to the given std::ostream.
+                 *
+                 * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+                 * @date   2012-09-30
+                 * @since  1.0
+                 */
+                virtual std::ostream &operator()(std::ostream &)
+                    = 0;
+            };
+            /**
+             * @private
+             * When we return a local class from any of the functions
+             * in the cipra::tap13 namespace, we need to `new` it.
+             * Use a std::unique_ptr to `delete` it when needed.
+             */
+            typedef std::unique_ptr<output_helper> output;
+
+            /**
+             * Print some TAP13 output to a std::ostream.  This TAP13
+             * output will be generated from one of the functions in
+             * the cipra::tap13 namespace.
+             *
+             * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+             * @date   2012-09-30
+             * @since  1.0
+             *
+             * @return The stream after the TAP13 output was printed.
+             */
+            inline std::ostream &operator<<(std::ostream &,
+                                            output);
+        }
+
+        /**
+         * @name Output functions
+         * These functions return opaque objects that can be sent to
+         * the test output with the iostream insertion (`operator<<`)
+         * operator.  The user does not need to worry about the
+         * implementation of the return type; the user can just type,
+         * for instance,
+         *
+         *     std::cout << cipra::tap13::header() << std::endl;
+         *
+         * which will print `TAP version 13` to `STDOUT`.
+         */
+        /// @{
+        /**
+         * Output a TAP13 stream header.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-30
+         * @since  1.0
+         *
+         * @return An opaque object that can be printed on a
+         * std::ostream.
+         */
+        inline details::output header();
+        /**
+         * Output a TAP13 plan.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-30
+         * @since  1.0
+         *
+         * @param [in] total The number of tests you plan on running.
+         *
+         * @return An opaque object that can be printed on a
+         * std::ostream.
+         */
+        inline details::output plan(int total);
+        /**
+         * Output a TAP13 simple diagnostic.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-30
+         * @since  1.0
+         *
+         * @param [in] text The diagnostic text.
+         *
+         * @return An opaque object that can be printed on a
+         * std::ostream.
+         *
+         * @see cipra::tap13::yamlish_diagnostic()
+         */
+        inline details::output diagnostic(std::string text);
+        /**
+         * Output a TAP13 `TODO` directive after an `ok` or `not ok`
+         * line.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-30
+         * @since  1.0
+         *
+         * @param [in] text The explanation of what needs to be done
+         * to make the test succeed.
+         *
+         * @return An opaque object that can be printed on a
+         * std::ostream.
+         */
+        inline details::output todo(std::string text);
+        /**
+         * Output a TAP13 `SKIP` directive after an `ok` or `not ok`
+         * line.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-30
+         * @since  1.0
+         *
+         * @param [in] text The explanation of why this test was
+         * skipped.
+         *
+         * @return An opaque object that can be printed on a
+         * std::ostream.
+         */
+        inline details::output skip(std::string text);
+        /**
+         * Output a successful test.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-30
+         * @since  1.0
+         *
+         * @param [in] number The test number.
+         * @param [in] name   What the user called this test.
+         *
+         * @return An opaque object that can be printed on a
+         * std::ostream.
+         */
+        inline details::output ok(int number, std::string name);
+        /**
+         * Output an unsuccessful test.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-30
+         * @since  1.0
+         *
+         * @param [in] number The test number.
+         * @param [in] name   What the user called this test.
+         *
+         * @return An opaque object that can be printed on a
+         * std::ostream.
+         */
+        inline details::output not_ok(int number, std::string name);
+        /**
+         * Output a TAP13 `Bail out!` line.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-30
+         * @since  1.0
+         *
+         * @param [in] why The reason for stopping test execution
+         * early.
+         *
+         * @return An opaque object that can be printed on a
+         * std::ostream.
+         */
+        inline details::output bail_out(std::string why);
+        /// @}
     }
-
-    std::string tap13_plan(int total)
-    {
-        std::stringstream out;
-        out << "1.." << total;
-        return out.str();
-    }
-    
-    std::string tap13_diagnostic(std::string text)
-    {
-        return "# " + text;
-    }
-
-    std::string tap13_ok(std::string name = "")
-    {
-        return std::string("ok ") +
-            ((name != "") ? "- " + name : "");
-    }
-
-    std::string tap13_not_ok(std::string name = "")
-    {
-        return std::string("not ok ") +
-            ((name != "") ? "- " + name : "");
-    }
-
-/*    struct tap13_yamlish {
-        std::string message;
-        std::string severity;
-        std::string source;
-        std::chrono::time_point<std::chrono::system_clock> datetime;
-        std::string file;
-        int line;
-        std::string name;
-        struct {
-            std::string type;
-            std::string value;
-        } actual, expected;
-        std::string display;
-        std::map<std::string, std::string> dump;
-        struct {
-            std::string name;
-            std::string what;
-        } error;
-        std::vector<std::string> backtrace;
-    };
-
-    namespace details {
-        std::string time_point_to_string(
-            std::chrono::time_point<std::chrono::system_clock> t)
-        {
-            char datetime_string[] = "YYYY-MM-DDThh:mm:ss+0000";
-            std::time_t t =
-                std::chrono::system_clock::to_time_t(yaml.datetime);
-            std::strftime(datetime_string, sizeof datetime_string,
-                          "%FT%T%z", std::localtime(&t));
-            return std::string(datetime_string);
-        }
-
-        std::string value_to_string(std::string type, std::string val)
-        {
-            return std::
-    }
-
-    std::string tap13_yamlish_output(tap13_yamlish yaml)
-    {
-        std::string output("    ---\n");
-        if (yaml.message != "") {
-            output += "    message: " + yaml.message + "\n";
-        }
-        if (yaml.severity != "") {
-            output += "    severity: " + yaml.severity + "\n"
-        }
-        if (yaml.source != "") {
-            output += "    source: " + yaml.source + "\n";
-        }
-        if (yaml.datetime != std::chrono::time_point
-            <std::chrono::system_clock>()) {
-            output += "    datetime: " +
-                time_point_to_string(yaml.datetime) + "\n";
-        }
-        if (yaml.file != "") {
-            output += "    file: " + yaml.file + "\n";
-        }
-        if (yaml.line != 0) {
-            output += "    line: " + yaml.line + "\n";
-        }
-        if (yaml.name != "") {
-            output += "    name: " + yaml.name + "\n";
-        }
-        if (yaml.file != "") {
-            output += "    file: " + yaml.file + "\n";
-            } */
-
 }
+
+#include "cipra-tap13.inl"
 
 #endif
