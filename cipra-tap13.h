@@ -150,6 +150,18 @@ namespace cipra {
          */
         inline details::output diagnostic(std::string text);
         /**
+         * Output a TAP13 YAMLish diagnostic.
+         * @todo Implement this.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-30
+         * @since  1.0
+         *
+         * @return An opaque object that can be printed on a
+         * std::ostream.
+         */
+        inline details::output yamlish_diagnostic(/* ... */);
+        /**
          * Output a TAP13 `TODO` directive after an `ok` or `not ok`
          * line.
          *
