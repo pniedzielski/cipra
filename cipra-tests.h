@@ -412,6 +412,7 @@ namespace cipra {
          */
         inline std::string current_exception_name();
 
+        counter test_counter; ///< A counter of unique test indices.
         bool succeeded; ///< Whether all the tests succeeded.
     };
 }
