@@ -119,6 +119,15 @@ namespace cipra {
         inline void plan(int total);
 
         /**
+         * @name Diagnostic output
+         * Prints some string to your test output.  These methods must
+         * be used, because the normal output to the nonrmal C++
+         * iostreams will be intercepted during the course of the unit
+         * test.  The API is modelled on that of Perl's `Test::More`
+         * module.  For a more extensible API, use the iostream.
+         */
+        /// @{
+        /**
          * Print a diagnostic message to the test output.
          *
          * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
@@ -138,7 +147,21 @@ namespace cipra {
          * @param [in] message A string to print to the test output.
          */
         void note(std::string message);
+        /// @}
         
+        /**
+         * @name Test Cases
+         * Call these functions to perform single test cases in your
+         * unit test.  Each of these functions will output to the test
+         * output whether the succeed or fail.
+         *
+         * Test cases that run code take some input that has an
+         * operator().   This can include function pointers, functor
+         * objects, or C++11 lambdas.  This allows a form of "lazy
+         * execution", in which the test case can run code before and
+         * after running your inputted code.
+         */
+        /// @{
         /**
          * Assert that some expression returns a value that when
          * converted to a `bool` will be `true`.
@@ -273,6 +296,7 @@ namespace cipra {
          */
         template<typename exceptionT, typename funcT>
         void nothrows(funcT expr, std::string name);
+        /// @}
 
     private:
         /**
