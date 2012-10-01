@@ -188,7 +188,55 @@ namespace cipra {
          * begin.
          */
         template<typename funcT>
-        void ok(funcT expr, std::string name);
+        void ok(funcT expr, std::string name = std::string(""));
+        /**
+         * Assert that some value is the same as another value.
+         * Either the types `T` and `U` need to be implicitly
+         * convertible or there must be defined an `operator==(T,U)`
+         * function or method.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-28
+         * @since  1.0
+         * 
+         * @tparam T Some type.
+         * @tparam U Some other type.  May be the same type as `T`.
+         *
+         * @param [in] got      A value we got.
+         * @param [in] expected A value we are expecting.
+         * @param [in] name     A user-readable description of this
+         * test assertion.
+         *
+         * @warning This method does not capture any exceptions that
+         * may be thrown in determining the values of `got` and
+         * `expected`.
+         */
+        template<typename T, typename U>
+        void is(T got, U expected, std::string name = std::string(""));
+        /**
+         * Assert that some value is not the same as another value.
+         * Either the types `T` and `U` need to be implicitly
+         * convertible or there must be defined an `operator!=(T,U)`
+         * function or method.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-09-28
+         * @since  1.0
+         * 
+         * @tparam T Some type.
+         * @tparam U Some other type.  May be the same type as `T`.
+         *
+         * @param [in] got      A value we got.
+         * @param [in] expected A value we are expecting *not* to get.
+         * @param [in] name     A user-readable description of this
+         * test assertion.
+         *
+         * @warning This method does not capture any exceptions that
+         * may be thrown in determining the values of `got` and
+         * `expected`.
+         */
+        template<typename T, typename U>
+        void isnt(T got, U expected, std::string name = std::string(""));
         /**
          * Assert that some expression throws an exception of any type.
          *
@@ -213,7 +261,7 @@ namespace cipra {
          * begin.
          */
         template<typename funcT>
-        void throws(funcT expr, std::string name);
+        void throws(funcT expr, std::string name = std::string(""));
         /**
          * Assert that some expression throws an exception of a
          * specified type.
@@ -241,7 +289,7 @@ namespace cipra {
          * begin.
          */
         template<typename exceptionT, typename funcT>
-        void throws(funcT expr, std::string name);
+        void throws(funcT expr, std::string name = std::string(""));
         /**
          * Assert that some expression does not throw an exception of
          * any type.
@@ -267,7 +315,7 @@ namespace cipra {
          * begin.
          */
         template<typename funcT>
-        void nothrows(funcT expr, std::string name);
+        void nothrows(funcT expr, std::string name = std::string(""));
         /**
          * Assert that some expression does not throw an exception of
          * a specified type.
@@ -295,7 +343,7 @@ namespace cipra {
          * begin.
          */
         template<typename exceptionT, typename funcT>
-        void nothrows(funcT expr, std::string name);
+        void nothrows(funcT expr, std::string name = std::string(""));
         /// @}
 
     private:

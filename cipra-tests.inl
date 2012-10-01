@@ -143,6 +143,26 @@ namespace cipra {
                  typename std::is_convertible<decltype(expr()), bool>::type());
     }
 
+    template<typename T, typename U>
+    void fixture::is(T got, U expected, std::string name)
+    {
+        if (got == expected) {
+            std::cout << tap13_ok(name) << std::endl;
+        } else {
+            std::cout << tap13_not_ok(name) << std::endl;
+        }
+    }
+
+    template<typename T, typename U>
+    void fixture::isnt(T got, U expected, std::string name)
+    {
+        if (got != expected) {
+            std::cout << tap13_ok(name) << std::endl;
+        } else {
+            std::cout << tap13_not_ok(name) << std::endl;
+        }
+    }
+
     template<typename funcT>
     void fixture::throws(funcT expr, std::string name)
     {
