@@ -68,12 +68,26 @@ namespace cipra {
      * behavior outside of exception diagnostics.
      */
     class fixture {
-        /// A type to tell the fixture to skip all unit tests.
+        /// An empty type for the @ref skip_all constant.
         struct skip_all_t {};
-    public:
-        /// The constant of the type to skip all unit tests.
+        /// An empty type for the @ref no_plan constant.
+        struct no_plan_t {};
+    protected:
+        /**
+         * @name Constants
+         * A few value-less constants that can be passed to certain
+         * functions in the test fixture.  These constants are only
+         * used in overload resolution.  The names of these constants
+         * are taken from `Test::More`.
+         */
+        /// @{
+        /// The constant of the type to skip all test cases.
         static const skip_all_t skip_all;
+        /// The constant of the type to have no plan in the test.
+        static const no_plan_t  no_plan;
+        /// @}
 
+    public:
         /**
          * Run this test fixture and produce output from the
          * user-defined `test()` method.  Returns a value suitable for
@@ -94,7 +108,8 @@ namespace cipra {
 
     protected:
         /**
-         * Construct a new test fixture.
+         * Construct a new test fixture with no plan.  A plan can be
+         * specified with the plan() method.
          *
          * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
          * @date   2012-09-02
