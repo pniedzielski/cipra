@@ -68,7 +68,12 @@ namespace cipra {
      * behavior outside of exception diagnostics.
      */
     class fixture {
+        /// A type to tell the fixture to skip all unit tests.
+        struct skip_all_t {};
     public:
+        /// The constant of the type to skip all unit tests.
+        static const skip_all_t skip_all;
+
         /**
          * Run this test fixture and produce output from the
          * user-defined `test()` method.  Returns a value suitable for
@@ -117,6 +122,17 @@ namespace cipra {
          * @param [in] total The number of tests you want to run.
          */
         inline void plan(int total);
+        /**
+         * Tells the fixture to skip all test cases.
+         *
+         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @date   2012-10-02
+         * @since  1.0
+         *
+         * @param [in] reason Why this test fixture is being skipped.
+         */
+        inline void plan(skip_all_t,
+                         std::string reason = std::string(""));
 
         /**
          * @name Diagnostic output

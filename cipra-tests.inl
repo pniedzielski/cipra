@@ -84,6 +84,11 @@ namespace cipra {
     {
         std::cout << tap13::plan(total) << std::endl;
     }
+    void fixture::plan(fixture::skip_all_t, std::string reason)
+    {
+        std::cout << tap13_plan(0) << ' ' << tap13_diagnostic(reason)
+                  << std::endl;
+    }
 
     void fixture::diag(std::string message)
     {
