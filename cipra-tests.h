@@ -179,7 +179,7 @@ namespace cipra {
          */
         void note(std::string message);
         /// @}
-        
+
         /**
          * @name Test Cases
          * Call these functions to perform single test cases in your
@@ -229,7 +229,7 @@ namespace cipra {
          * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
          * @date   2012-09-28
          * @since  1.0
-         * 
+         *
          * @tparam T Some type.
          * @tparam U Some other type.  May be the same type as `T`.
          *
@@ -253,7 +253,7 @@ namespace cipra {
          * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
          * @date   2012-09-28
          * @since  1.0
-         * 
+         *
          * @tparam T Some type.
          * @tparam U Some other type.  May be the same type as `T`.
          *
@@ -411,7 +411,7 @@ namespace cipra {
          */
         template<typename funcT>
         void ok_impl(funcT &expr, std::string &name, std::false_type);
-        
+
         /**
          * Override this method with your test cases.  By default, no
          * tests are defined.
