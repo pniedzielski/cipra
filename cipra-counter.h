@@ -59,7 +59,7 @@ namespace cipra {
     template <typename integralT>
     class counter {
     public:
-#ifndef CIPRA_DOXYGEN_RUNNING
+#ifndef CIPRA_DOXYGEN_RUNNING // thinks static_assert is a decl...?
         static_assert(std::is_integral<integralT>::value,
                       "Counter type is not integral.");
 #endif
