@@ -38,8 +38,8 @@
               (indent-tabs-mode . nil)
               (eval . (progn
                         (setq doxymacs-doxygen-dirs
-                              `(("cipra/"
-                                 "doc/cipra.xml"
-                                 ,(concat "file://"
-                                         (file-name-directory (buffer-file-name))
-                                         "doc/html")))))))))
+                              `(("cipra/" "doc/cipra.xml"
+                                 ,(concat
+                                   "file://"
+                                   (file-name-directory (buffer-file-name))
+                                   "doc/html")))))))))
