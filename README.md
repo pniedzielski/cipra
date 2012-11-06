@@ -50,6 +50,12 @@ sentence.
 Where possible, cipra's test interface is analogous to Perl's
 `Test::More` module.
 
+To use cipra, just include the `cipra.h` header file in your test
+file.  You do not need to link to any library.  All methods are inline
+in the header files; there is no need to compile cipra.
+
+@include usage.cpp <!-- see usage.cpp for an example -->
+
 ## Resources
 
   * [Home Page](https://gitorious.org/patrickniedzielski/pages/Cipra)
