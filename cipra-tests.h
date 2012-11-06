@@ -53,7 +53,7 @@ namespace cipra {
      * derive from this class.
      *
      * @version 1.0
-     * @author  Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+     * @author  Patrick M. Niedzielski
      * @date    2012-09-07
      * @since   1.0
      *
@@ -93,7 +93,7 @@ namespace cipra {
          * user-defined `test()` method.  Returns a value suitable for
          * the return value of the program's `main()` function.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-02
          * @since  1.0
          *
@@ -111,7 +111,7 @@ namespace cipra {
          * Construct a new test fixture with no plan.  A plan can be
          * specified with the plan() method.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-02
          * @since  1.0
          */
@@ -119,7 +119,7 @@ namespace cipra {
         /**
          * Construct a new test fixture from an existing one.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-02
          * @since  1.0
          */
@@ -130,7 +130,7 @@ namespace cipra {
          * this fixture.  This is used as a checksum after all tests
          * are run.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-08
          * @since  1.0
          *
@@ -140,7 +140,7 @@ namespace cipra {
         /**
          * Tells the fixture to skip all test cases.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-10-02
          * @since  1.0
          *
@@ -161,7 +161,7 @@ namespace cipra {
         /**
          * Print a diagnostic message to the test output.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-26
          * @since  1.0
          *
@@ -171,7 +171,7 @@ namespace cipra {
         /**
          * Print out a non-diagnostic note to the test output.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-26
          * @since  1.0
          *
@@ -197,7 +197,7 @@ namespace cipra {
          * Assert that some expression returns a value that when
          * converted to a `bool` will be `true`.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-07
          * @since  1.0
          *
@@ -226,7 +226,7 @@ namespace cipra {
          * convertible or there must be defined an `operator==(T,U)`
          * function or method.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-28
          * @since  1.0
          *
@@ -250,7 +250,7 @@ namespace cipra {
          * convertible or there must be defined an `operator!=(T,U)`
          * function or method.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-28
          * @since  1.0
          *
@@ -271,7 +271,7 @@ namespace cipra {
         /**
          * Assert that some expression throws an exception of any type.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-07
          * @since  1.0
          *
@@ -297,7 +297,7 @@ namespace cipra {
          * Assert that some expression throws an exception of a
          * specified type.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-07
          * @since  1.0
          *
@@ -325,7 +325,7 @@ namespace cipra {
          * Assert that some expression does not throw an exception of
          * any type.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-07
          * @since  1.0
          *
@@ -351,7 +351,7 @@ namespace cipra {
          * Assert that some expression does not throw an exception of
          * a specified type.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-07
          * @since  1.0
          *
@@ -381,7 +381,7 @@ namespace cipra {
         /**
          * Implements the ok() method.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-08
          * @since  1.0
          *
@@ -398,7 +398,7 @@ namespace cipra {
          * Dummy method for if `expr()` cannot be converted to a
          * boolean value.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-08
          * @since  1.0
          *
@@ -416,7 +416,7 @@ namespace cipra {
          * Override this method with your test cases.  By default, no
          * tests are defined.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-08
          * @since  1.0
          */
@@ -426,7 +426,7 @@ namespace cipra {
          * Find out the name of the type of the current exception that
          * was thrown.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-07
          * @since  1.0
          *

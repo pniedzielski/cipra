@@ -47,7 +47,7 @@ namespace cipra {
      * testing at the same time.
      *
      * @version 1.0
-     * @author  Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+     * @author  Patrick M. Niedzielski
      * @date    2012-09-26
      * @since   1.0
      *
@@ -71,7 +71,7 @@ namespace cipra {
         /**
          * Initializes the atomic counter.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-26
          * @since  1.0
          */
@@ -80,7 +80,7 @@ namespace cipra {
         /**
          * Returns a unique test number.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-26
          * @since  1.0
          *

@@ -58,7 +58,7 @@ namespace cipra {
              * TAP13 output to an iostream.
              *
              * @version 1.0
-             * @author  Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+             * @author  Patrick M. Niedzielski
              * @date    2012-09-30
              * @since   1.0
              */
@@ -67,7 +67,7 @@ namespace cipra {
                 /**
                  * Prints the TAP13 output to the given std::ostream.
                  *
-                 * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+                 * @author Patrick M. Niedzielski
                  * @date   2012-09-30
                  * @since  1.0
                  */
@@ -87,7 +87,7 @@ namespace cipra {
              * output will be generated from one of the functions in
              * the cipra::tap13 namespace.
              *
-             * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+             * @author Patrick M. Niedzielski
              * @date   2012-09-30
              * @since  1.0
              *
@@ -113,7 +113,7 @@ namespace cipra {
         /**
          * Output a TAP13 stream header.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-30
          * @since  1.0
          *
@@ -124,7 +124,7 @@ namespace cipra {
         /**
          * Output a TAP13 plan.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-30
          * @since  1.0
          *
@@ -137,7 +137,7 @@ namespace cipra {
         /**
          * Output a TAP13 simple diagnostic.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-30
          * @since  1.0
          *
@@ -153,7 +153,7 @@ namespace cipra {
          * Output a TAP13 YAMLish diagnostic.
          * @todo Implement this.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-30
          * @since  1.0
          *
@@ -165,7 +165,7 @@ namespace cipra {
          * Output a TAP13 `TODO` directive after an `ok` or `not ok`
          * line.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-30
          * @since  1.0
          *
@@ -180,7 +180,7 @@ namespace cipra {
          * Output a TAP13 `SKIP` directive after an `ok` or `not ok`
          * line.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-30
          * @since  1.0
          *
@@ -194,7 +194,7 @@ namespace cipra {
         /**
          * Output a successful test.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-30
          * @since  1.0
          *
@@ -208,7 +208,7 @@ namespace cipra {
         /**
          * Output an unsuccessful test.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-30
          * @since  1.0
          *
@@ -222,7 +222,7 @@ namespace cipra {
         /**
          * Output a TAP13 `Bail out!` line.
          *
-         * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+         * @author Patrick M. Niedzielski
          * @date   2012-09-30
          * @since  1.0
          *
