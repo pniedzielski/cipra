@@ -56,6 +56,10 @@ in the header files; there is no need to compile cipra.
 
 @include usage.cpp <!-- see usage.cpp for an example -->
 
+To use the helper macros, define either the preprocessor symbol
+`CIPRA_MACRO_APOLOGIST` or the symbol `CIPRA_MACRO_POLLUTER` and
+include `cipra-macros.h`.
+
 ## Resources
 
   * [Home Page](https://gitorious.org/patrickniedzielski/pages/Cipra)
