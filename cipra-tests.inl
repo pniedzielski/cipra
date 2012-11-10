@@ -69,7 +69,7 @@ namespace cipra {
     {
         std::cout << cipra::tap13::header() << std::endl;
         test();
-        return succeeded ? 0 : 1;
+        return status ? 0 : 1;
     }
 
     fixture::fixture()
@@ -86,7 +86,7 @@ namespace cipra {
     }
     void fixture::plan(fixture::skip_all_t, std::string reason)
     {
-        std::cout << tap13_plan(0) << ' ' << tap13_diagnostic(reason)
+        std::cout << tap13::plan(0) << ' ' << tap13::diagnostic(reason)
                   << std::endl;
     }
 
@@ -152,9 +152,9 @@ namespace cipra {
     void fixture::is(T got, U expected, std::string name)
     {
         if (got == expected) {
-            std::cout << tap13_ok(name) << std::endl;
+            std::cout << tap13::ok(0, name) << std::endl;
         } else {
-            std::cout << tap13_not_ok(name) << std::endl;
+            std::cout << tap13::not_ok(0, name) << std::endl;
         }
     }
 
@@ -162,9 +162,9 @@ namespace cipra {
     void fixture::isnt(T got, U expected, std::string name)
     {
         if (got != expected) {
-            std::cout << tap13_ok(name) << std::endl;
+            std::cout << tap13::ok(0, name) << std::endl;
         } else {
-            std::cout << tap13_not_ok(name) << std::endl;
+            std::cout << tap13::not_ok(0, name) << std::endl;
         }
     }
 
