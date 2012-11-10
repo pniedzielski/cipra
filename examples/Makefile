@@ -35,9 +35,6 @@
 CC=g++
 CFLAGS=--std=c++11
 
-#macros: macros.cpp
-#	$(CC) $(CFLAGS) -o $@ $<
-
 usage: usage.cpp
 	$(CC) $(CFLAGS) -o $@ $<
 
