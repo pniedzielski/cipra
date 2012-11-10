@@ -51,9 +51,4 @@
 #include "cipra-counter.h"
 #include "cipra-tests.h"
 
-// If the user wants to use macros, they will have to include the file
-// <cipra-macros.h> and define either the preprocessor symbol
-// CIPRA_MACRO_APOLOGIST or the symbol CIPRA_MACRO_POLLUTER.  See that
-// file for details.
-
 #endif
