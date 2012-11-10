@@ -56,15 +56,17 @@ namespace cipra {
      * be the unsigned counterpart of this type if it is not already
      * unsigned.
      */
-    template <typename integralT>
+    template <typename integralT = int>
     class counter {
     public:
         static_assert(std::is_integral<integralT>::value,
                       "Counter type is not integral.");
+
         /// The index type of the counter.  The actual index type is
         /// going to be the unsigned counterpart of the template
         /// parameter `T`.
-        typedef std::make_unsigned<integralT>::type index_type;
+        typedef typename std::make_unsigned<integralT>::type
+            index_type;
 
         /**
          * Initializes the atomic counter.

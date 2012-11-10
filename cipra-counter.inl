@@ -40,14 +40,16 @@
 
 namespace cipra {
 
-    counter::counter()
+    template <typename integralT>
+    counter<integralT>::counter()
     {
-        std::atomic_init(&count, 1);
+        count.store(1);
     }
 
 
-    counter::index_type
-    counter::new_test_number()
+    template <typename integralT>
+    typename counter<integralT>::index_type
+    counter<integralT>::new_test_number()
     {
         return count++;
     }
