@@ -443,8 +443,8 @@ namespace cipra {
          */
         inline std::string current_exception_name();
 
-        int     status;         ///< How did we do in the unit test?
-        counter test_counter;   ///< A counter of unique test indices.
+        int          status;         ///< How did we do in the unit test?
+        counter<int> test_counter;   ///< A counter of unique test indices.
     };
 }
 
