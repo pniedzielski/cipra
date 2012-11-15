@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
     struct my_fixture : cipra::fixture {
         virtual void test() override // define this function to run tests
         {
-            plan(13); // Run 13 tests.
+            plan(14); // Run 14 tests.
 
             ok([]() { return true; }, "ok() succeeds on true");
             ok([]() { return false; }, "ok() fails on false");
