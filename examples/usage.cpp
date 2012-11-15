@@ -23,6 +23,8 @@ int main(int argc, char* argv[])
             ok([]() { return false; }, "ok() fails on false");
             ok([]() { throw 0; return true; }, "ok() fails on throw");
 
+            ok(true, "ok() with just boolean arguments works");
+
             throws([]() { throw 0; }, "throws() detects int throw");
             throws([]() { }, "throws() fails on no throw");
 
