@@ -48,6 +48,15 @@ int main(int argc, char* argv[])
             pass("Will pass automatically.");
             pass("No matter what.");
             fail("Always fails.");
+
+            is(5, 5, "5 == 5");
+            is(5, 6, "5 == 6; this should fail.");
+            is(std::string("cipra"), std::string("cipra"), "String equality");
+
+            isnt(5, 6, "5 != 6");
+            isnt(5, 5, "5 != 5; this should fail.");
+            isnt(std::string(";,.pyfgcrl"), std::string("qwertyuiop"),
+                 "Programmer Dvorak is not QWERTY");
         }
     } test;
 

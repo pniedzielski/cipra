@@ -39,6 +39,7 @@
 #include "cipra-tap13.h"
 
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <type_traits>
 
@@ -160,7 +161,13 @@ namespace cipra {
         if (got == expected) {
             std::cout << tap13::ok(num, name) << std::endl;
         } else {
-            std::cout << tap13::not_ok(num, name) << std::endl;
+            std::ostringstream ss;
+            ss << "         got: " << got;
+            std::cout << tap13::not_ok(num, name) << std::endl
+                      << tap13::diagnostic(ss.str()) << std::endl;
+            ss.str(std::string());
+            ss << "    expected: " << expected;
+            std::cout << tap13::diagnostic(ss.str()) << std::endl;
         }
     }
 
@@ -175,7 +182,10 @@ namespace cipra {
         if (got != expected) {
             std::cout << tap13::ok(num, name) << std::endl;
         } else {
-            std::cout << tap13::not_ok(num, name) << std::endl;
+            std::ostringstream ss;
+            ss << "    got: " << got;
+            std::cout << tap13::not_ok(num, name) << std::endl
+                      << tap13::diagnostic(ss.str()) << std::endl;
         }
     }
 
