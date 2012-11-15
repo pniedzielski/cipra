@@ -66,6 +66,9 @@ namespace cipra {
      * `abi::__cxa_current_exception_type()` and `abi::__cxa_demangle`
      * in the header file `cxxabi.h`.  This flag does not affect test
      * behavior outside of exception diagnostics.
+     *
+     * @todo Add a subtest() method.
+     * @todo Add some equivalent of TODO and SKIP blocks.
      */
     class fixture {
         /// An empty type for the @ref skip_all constant.
@@ -187,6 +190,9 @@ namespace cipra {
          * @since  1.0
          *
          * @param [in] object An object to print.
+         *
+         * @todo The `operator<<()` could have newlines in it.  These
+         * should be escaped.
          */
         template <typename T>
         void explain(T object);
@@ -199,7 +205,7 @@ namespace cipra {
          * output whether the succeed or fail.
          *
          * Test cases that run code take some input that has an
-         * operator().   This can include function pointers, functor
+         * `operator()`.   This can include function pointers, functor
          * objects, or C++11 lambdas.  This allows a form of "lazy
          * execution", in which the test case can run code before and
          * after running your inputted code.
@@ -212,9 +218,6 @@ namespace cipra {
          * @author Patrick M. Niedzielski
          * @date   2012-09-07
          * @since  1.0
-         *
-         * @tparam funcT The type of the object provided in the `expr`
-         * argument.
          *
          * @param [in] expr Some object providing the `operator()`
          * that will return a value convertable to `bool`.  This
@@ -242,13 +245,14 @@ namespace cipra {
          * @date   2012-09-28
          * @since  1.0
          *
-         * @tparam T Some type.
-         * @tparam U Some other type.  May be the same type as `T`.
-         *
          * @param [in] got      A value we got.
          * @param [in] expected A value we are expecting.
          * @param [in] name     A user-readable description of this
          * test assertion.
+         *
+         * @note An `operator<<` function for stream output must be
+         * defined for both `T` and `U` to output the objects in the
+         * case of failure.
          *
          * @warning This method does not capture any exceptions that
          * may be thrown in determining the values of `got` and
@@ -266,13 +270,13 @@ namespace cipra {
          * @date   2012-09-28
          * @since  1.0
          *
-         * @tparam T Some type.
-         * @tparam U Some other type.  May be the same type as `T`.
-         *
          * @param [in] got      A value we got.
          * @param [in] expected A value we are expecting *not* to get.
          * @param [in] name     A user-readable description of this
          * test assertion.
+         *
+         * @note An `operator<<` function for stream output must be
+         * defined for `T`.
          *
          * @warning This method does not capture any exceptions that
          * may be thrown in determining the values of `got` and
@@ -286,9 +290,6 @@ namespace cipra {
          * @author Patrick M. Niedzielski
          * @date   2012-09-07
          * @since  1.0
-         *
-         * @tparam funcT The type of the object provided in the `expr`
-         * argument.
          *
          * @param [in] expr Some object providing the `operator()`.
          * This expression will be your assertion expression.
@@ -315,8 +316,6 @@ namespace cipra {
          *
          * @tparam exceptionT The type of the exception that running
          * `expr` should cause.
-         * @tparam funcT The type of the object provided in the `expr`
-         * argument.
          *
          * @param [in] expr Some object providing the `operator()`.
          * This expression will be your assertion expression.
@@ -340,9 +339,6 @@ namespace cipra {
          * @author Patrick M. Niedzielski
          * @date   2012-09-07
          * @since  1.0
-         *
-         * @tparam funcT The type of the object provided in the `expr`
-         * argument.
          *
          * @param [in] expr Some object providing the `operator()`.
          * This expression will be your assertion expression.
@@ -369,8 +365,6 @@ namespace cipra {
          *
          * @tparam exceptionT The type of the exception that running
          * `expr` should not cause.
-         * @tparam funcT The type of the object provided in the `expr`
-         * argument.
          *
          * @param [in] expr Some object providing the `operator()`.
          * This expression will be your assertion expression.
@@ -397,8 +391,6 @@ namespace cipra {
          * @since  1.0
          *
          * @tparam T The type of object to attempt creating.
-         * @tparam argsT A parameter pack of arguments to pass to the
-         * constructor of type `T`.
          *
          * @param [in] args The arguments to pass to the constructor
          * of type `T`.  These arguments will be perfectly forwarded
