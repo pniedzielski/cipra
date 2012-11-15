@@ -67,8 +67,9 @@ namespace cipra {
      * in the header file `cxxabi.h`.  This flag does not affect test
      * behavior outside of exception diagnostics.
      *
-     * @todo Add a subtest() method.
-     * @todo Add some equivalent of TODO and SKIP blocks.
+     * @todo Add a `subtest()` method.
+     * @todo Add some equivalent of `TODO` and `SKIP` blocks.
+     * @todo Add a `BAIL_OUT()` method.
      */
     class fixture {
         /// An empty type for the @ref skip_all constant.
