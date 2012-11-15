@@ -43,8 +43,8 @@
 namespace cipra {
     namespace tap13 {
 
+        /// @cond DETAILS
         /**
-         * @internal
          * Implementation of the iostream manipulators for TAP13
          * output.  This should not be documented in the Doxygen
          * output unless the internal flag is set in the Doxyfile.  It
@@ -53,7 +53,6 @@ namespace cipra {
          */
         namespace details {
             /**
-             * @private
              * A base class for classes that know how to print some
              * TAP13 output to an iostream.
              *
@@ -75,7 +74,6 @@ namespace cipra {
                     = 0;
             };
             /**
-             * @private
              * When we return a local class from any of the functions
              * in the cipra::tap13 namespace, we need to `new` it.
              * Use a std::unique_ptr to `delete` it when needed.
@@ -96,6 +94,7 @@ namespace cipra {
             inline std::ostream &operator<<(std::ostream &,
                                             output);
         }
+        /// @endcond
 
         /**
          * @name Output functions
