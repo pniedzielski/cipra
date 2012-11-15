@@ -375,6 +375,37 @@ namespace cipra {
          */
         template<typename exceptionT, typename funcT>
         void nothrows(funcT expr, std::string name = std::string(""));
+#ifdef CIPRA_USE_VARIADIC_TEMPLATES
+        /**
+         * Assert that the constructor of an object can be constructed
+         * without throwing an exception of any type.
+         *
+         * @author Patrick M. Niedzielski
+         * @date   2012-11-15
+         * @since  1.0
+         *
+         * @tparam T The type of object to attempt creating.
+         * @tparam argsT A parameter pack of arguments to pass to the
+         * constructor of type `T`.
+         *
+         * @param [in] args The arguments to pass to the constructor
+         * of type `T`.  These arguments will be perfectly forwarded
+         * to the constructor.
+         *
+         * @return An object of type `T`.
+         *
+         * @note If the type `T` is NonCopyable, it must be Movable.
+         *
+         * @warning If the object cannot be created, the rest of the
+         * subtest (or test, if subtests are not used) will be
+         * skipped, to prevent operations on the incorrectly
+         * constructed object.
+         *
+         * @todo Implement the aborting of subtests/tests.
+         */
+        template<typename T, typename... argsT>
+        T new_ok(argsT&&... args);
+#endif
         /// @}
 
     private:

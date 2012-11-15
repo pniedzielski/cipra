@@ -272,6 +272,31 @@ namespace cipra {
         std::cout << tap13::ok(num, name) << std::endl;
     }
 
+#ifdef CIPRA_USE_VARIADIC_TEMPLATES
+    template<typename T, typename... argsT>
+    T fixture::new_ok(argsT&&... args)
+    {
+        // decltype here so we only have to change the type in the
+        // class.  No runtime cost.
+        typename decltype(test_counter)::index_type num =
+            test_counter.new_test_number();
+
+        try {
+            T&& t = T(std::forward<argsT>(args)...);
+            std::cout << tap13::ok(num, "") << std::endl;
+            return t;
+        } catch (...) {
+            std::cout << tap13::not_ok(num, "") << std::endl
+                      << tap13::diagnostic("got exception of type " +
+                                           current_exception_name())
+                      << std::endl;
+            throw;
+// TODO:
+//            throw abort_subtest_exception();
+        }
+    }
+#endif
+
     void fixture::test()
     {
         // If there's no test defined by the user, this will be
