@@ -35,13 +35,18 @@
 CC=g++
 CFLAGS=--std=c++11
 
+all: usage variadic
+
 usage: usage.cpp
+	$(CC) $(CFLAGS) -o $@ $<
+
+variadic: variadic.cpp
 	$(CC) $(CFLAGS) -o $@ $<
 
 #yamlish: yamlish.cpp
 #	$(CC) $(CFLAGS) -o $@ $<
 
-.PHONY: clean
+.PHONY: clean all
 
 clean:
-	rm -f macros usage yamlish
+	rm -f usage variadic yamlish
