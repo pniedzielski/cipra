@@ -107,7 +107,7 @@ namespace cipra {
     {
         std::ostringstream ss;
         ss << "    " << object;
-        std::cout << tap13::diagonstic(ss.str()) << std::endl;
+        std::cout << tap13::diagnostic(ss.str()) << std::endl;
     }
 
     template<typename funcT>
