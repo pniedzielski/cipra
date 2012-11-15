@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
     struct my_fixture : cipra::fixture {
         virtual void test() override // define this function to run tests
         {
-            plan(14); // Run 14 tests.
+            plan(17); // Run 17 tests.
 
             ok([]() { return true; }, "ok() succeeds on true");
             ok([]() { return false; }, "ok() fails on false");
@@ -41,6 +41,13 @@ int main(int argc, char* argv[])
             nothrows<int>([]() {}, "nothrows<int>() accepts no throw");
             nothrows<int>([]() { throw 0; },
                          "nothrows<int>() fails on int throw");
+
+            // See the file variadic.cpp for examples of the
+            // new_ok<>() function.
+
+            pass("Will pass automatically.");
+            pass("No matter what.");
+            fail("Always fails.");
         }
     } test;
 

@@ -296,7 +296,27 @@ namespace cipra {
         }
     }
 #endif
+    
+    void fixture::pass(std::string name)
+    {
+        // decltype here so we only have to change the type in the
+        // class.  No runtime cost.
+        typename decltype(test_counter)::index_type num =
+            test_counter.new_test_number();
+        
+        std::cout << tap13::ok(num, name) << std::endl;
+    }
 
+    void fixture::fail(std::string name)
+    {
+        // decltype here so we only have to change the type in the
+        // class.  No runtime cost.
+        typename decltype(test_counter)::index_type num =
+            test_counter.new_test_number();
+        
+        std::cout << tap13::not_ok(num, name) << std::endl;
+    }
+    
     void fixture::test()
     {
         // If there's no test defined by the user, this will be

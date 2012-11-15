@@ -406,6 +406,32 @@ namespace cipra {
         template<typename T, typename... argsT>
         T new_ok(argsT&&... args);
 #endif
+        /**
+         * Say that some test has passed.
+         *
+         * @author Patrick M. Niedzielski
+         * @date   2012-11-15
+         * @since  1.0
+         *
+         * @param [in] name A user-readable description of this test
+         * assertion.
+         *
+         * @note This is a synonym for ok(true, name).
+         */
+        void pass(std::string name = std::string(""));
+        /**
+         * Say that some test has failed.
+         * 
+         * @author Patrick M. Niedzielski
+         * @date   2012-11-15
+         * @since  1.0
+         *
+         * @param [in] name A user-readable description of this test
+         * assertion.
+         *
+         * @note This is a synonym for ok(false, name).
+         */
+        void fail(std::string name = std::string(""));
         /// @}
 
     private:
