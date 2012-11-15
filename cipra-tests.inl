@@ -125,7 +125,7 @@ namespace cipra {
             }
         } catch (...) { // don't count exception as ok
             std::cout << tap13::not_ok(num, name) << std::endl
-                      << tap13::diagnostic("got exception of type " +
+                      << tap13::diagnostic("    got exception of type " +
                                            current_exception_name())
                       << std::endl;
         }
@@ -196,7 +196,7 @@ namespace cipra {
         }
         // no exception thrown
         std::cout << tap13::not_ok(num, name) << std::endl
-                  << tap13::diagnostic("got no exception")
+                  << tap13::diagnostic("    got no exception")
                   << std::endl;
     }
 
@@ -217,14 +217,14 @@ namespace cipra {
         } catch (...) {
             // an exception was thrown, but we don't know what.
             std::cout << tap13::not_ok(num, name) << std::endl
-                      << tap13::diagnostic("got exception of type " +
+                      << tap13::diagnostic("    got exception of type " +
                                            current_exception_name())
                       << std::endl;
             return;
         }
         // no exception thrown
         std::cout << tap13::not_ok(num, name) << std::endl
-                  << tap13::diagnostic("got no exception")
+                  << tap13::diagnostic("    got no exception")
                   << std::endl;
     }
 
@@ -241,7 +241,7 @@ namespace cipra {
         } catch (...) {
             // exception not expected
             std::cout << tap13::not_ok(num, name) << std::endl
-                      << tap13::diagnostic("got exception of type " +
+                      << tap13::diagnostic("    got exception of type " +
                                            current_exception_name())
                       << std::endl;
             return;
@@ -287,7 +287,7 @@ namespace cipra {
             return t;
         } catch (...) {
             std::cout << tap13::not_ok(num, "") << std::endl
-                      << tap13::diagnostic("got exception of type " +
+                      << tap13::diagnostic("    got exception of type " +
                                            current_exception_name())
                       << std::endl;
             throw;

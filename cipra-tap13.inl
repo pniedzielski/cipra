@@ -113,7 +113,7 @@ namespace cipra {
                     if (number != 0)
                         out << " " << number;
                     if (name != "")
-                        out << " " << name;
+                        out << " - " << name;
                     return out;
                 }
             public:
