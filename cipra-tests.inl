@@ -102,6 +102,13 @@ namespace cipra {
     {
         std::cout << tap13::diagnostic(message) << std::endl;
     }
+    template <typename T>
+    void fixture::explain(T object)
+    {
+        std::ostringstream ss;
+        ss << "    " << object;
+        std::cout << tap13::diagonstic(ss.str()) << std::endl;
+    }
 
     template<typename funcT>
     void fixture::ok(funcT expr, std::string name)

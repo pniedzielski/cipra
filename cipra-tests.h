@@ -178,6 +178,18 @@ namespace cipra {
          * @param [in] message A string to print to the test output.
          */
         void note(std::string message);
+        /**
+         * Pretty-print an object to the test output using the
+         * object's `operator<<()`.
+         *
+         * @author Patick M. Niedzielski
+         * @date   2012-09-26
+         * @since  1.0
+         *
+         * @param [in] object An object to print.
+         */
+        template <typename T>
+        void explain(T object);
         /// @}
 
         /**
