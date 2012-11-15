@@ -99,88 +99,103 @@ namespace cipra {
         std::cout << tap13::diagnostic(message) << std::endl;
     }
 
-    // use this one for successful static assert
-    // we have to use this because there isn't function partial
-    // specialization.
     template<typename funcT>
-    void fixture::ok_impl(funcT &expr, std::string &name, std::true_type)
+    void fixture::ok(funcT expr, std::string name)
     {
+        // decltype here so we only have to change the type in the
+        // class.  No runtime cost.
+        typename decltype(test_counter)::index_type num =
+            test_counter.new_test_number();
+
+        // static_cast<bool>(expr()) should work
+        static_assert(
+            std::is_convertible<decltype(expr()), bool>::value,
+            "The expression argument provided cannot be evaluated as "
+            "true or false.  Further errors will likely be due to "
+            "this.");
+
         try {
             if (expr()) {
-                std::cout << tap13::ok(0, name) << std::endl;
-                return;
+                std::cout << tap13::ok(num, name) << std::endl;
             } else {
                 status = 1;
-                std::cout << tap13::not_ok(0, name) << std::endl;
-                return;
+                std::cout << tap13::not_ok(num, name) << std::endl;
             }
         } catch (...) { // don't count exception as ok
             status = 1;
-            std::cout << tap13::not_ok(0, name) << std::endl
+            std::cout << tap13::not_ok(num, name) << std::endl
                       << tap13::diagnostic("got exception of type " +
                                            current_exception_name())
                       << std::endl;
         }
     }
 
-    // use this one for failing static assert
-    // we have to use this because there isn't function partial
-    // specialization.
-    template<typename funcT>
-    void fixture::ok_impl(funcT &expr, std::string &name, std::false_type)
+    template<>
+    void fixture::ok<bool>(bool expr, std::string name)
     {
-        // There was an error in the static_assert.
-    }
+        // decltype here so we only have to change the type in the
+        // class.  No runtime cost.
+        typename decltype(test_counter)::index_type num =
+            test_counter.new_test_number();
 
-    template<typename funcT>
-    void fixture::ok(funcT expr, std::string name)
-    {
-        // static_cast<bool>(expr()) should work
-        static_assert(
-            std::is_convertible<decltype(expr()), bool>::value,
-            "The expression argument provided cannot be evaluated as "
-            "true or false.");
-
-        // now we separate it into another function so we don't get
-        // another compile error telling us the same thing, only more
-        // tersely
-        ok_impl (expr, name,
-                 typename std::is_convertible<decltype(expr()), bool>::type());
+        // They passed in some value that's boolean.  This is a
+        // shortcut for typing something simple that shouldn't throw,
+        // so we don't need to lazy execute it.
+        if (expr) {
+            std::cout << tap13::ok(num, name) << std::endl;
+        } else {
+            std::cout << tap13::not_ok(num, name) << std::endl;
+        }
     }
 
     template<typename T, typename U>
     void fixture::is(T got, U expected, std::string name)
     {
+        // decltype here so we only have to change the type in the
+        // class.  No runtime cost.
+        typename decltype(test_counter)::index_type num =
+            test_counter.new_test_number();
+
         if (got == expected) {
-            std::cout << tap13::ok(0, name) << std::endl;
+            std::cout << tap13::ok(num, name) << std::endl;
         } else {
-            std::cout << tap13::not_ok(0, name) << std::endl;
+            std::cout << tap13::not_ok(num, name) << std::endl;
         }
     }
 
     template<typename T, typename U>
     void fixture::isnt(T got, U expected, std::string name)
     {
+        // decltype here so we only have to change the type in the
+        // class.  No runtime cost.
+        typename decltype(test_counter)::index_type num =
+            test_counter.new_test_number();
+
         if (got != expected) {
-            std::cout << tap13::ok(0, name) << std::endl;
+            std::cout << tap13::ok(num, name) << std::endl;
         } else {
-            std::cout << tap13::not_ok(0, name) << std::endl;
+            std::cout << tap13::not_ok(num, name) << std::endl;
         }
     }
 
     template<typename funcT>
     void fixture::throws(funcT expr, std::string name)
     {
+        // decltype here so we only have to change the type in the
+        // class.  No runtime cost.
+        typename decltype(test_counter)::index_type num =
+            test_counter.new_test_number();
+
         try {
             (void)expr();
         } catch (...) {
             // we expect an exception
-            std::cout << tap13::ok(0, name) << std::endl;
+            std::cout << tap13::ok(num, name) << std::endl;
             return;
         }
         // no exception thrown
         status = 1;
-        std::cout << tap13::not_ok(0, name) << std::endl
+        std::cout << tap13::not_ok(num, name) << std::endl
                   << tap13::diagnostic("got no exception")
                   << std::endl;
     }
@@ -188,16 +203,21 @@ namespace cipra {
     template<typename exceptionT, typename funcT>
     void fixture::throws(funcT expr, std::string name)
     {
+        // decltype here so we only have to change the type in the
+        // class.  No runtime cost.
+        typename decltype(test_counter)::index_type num =
+            test_counter.new_test_number();
+        
         try {
             (void)expr();
         } catch (exceptionT &e) {
             // we expect this exception.
-            std::cout << tap13::ok(0, name) << std::endl;
+            std::cout << tap13::ok(num, name) << std::endl;
             return;
         } catch (...) {
             // an exception was thrown, but we don't know what.
             status = 1;
-            std::cout << tap13::not_ok(0, name) << std::endl
+            std::cout << tap13::not_ok(num, name) << std::endl
                       << tap13::diagnostic("got exception of type " +
                                            current_exception_name())
                       << std::endl;
@@ -205,7 +225,7 @@ namespace cipra {
         }
         // no exception thrown
         status = 1;
-        std::cout << tap13::not_ok(0, name) << std::endl
+        std::cout << tap13::not_ok(num, name) << std::endl
                   << tap13::diagnostic("got no exception")
                   << std::endl;
     }
@@ -213,37 +233,47 @@ namespace cipra {
     template<typename funcT>
     void fixture::nothrows(funcT expr, std::string name)
     {
+        // decltype here so we only have to change the type in the
+        // class.  No runtime cost.
+        typename decltype(test_counter)::index_type num =
+            test_counter.new_test_number();
+        
         try {
             (void)expr();
         } catch (...) {
             // exception not expected
             status = 1;
-            std::cout << tap13::not_ok(0, name) << std::endl
+            std::cout << tap13::not_ok(num, name) << std::endl
                       << tap13::diagnostic("got exception of type " +
                                            current_exception_name())
                       << std::endl;
             return;
         }
         // no exception thrown
-        std::cout << tap13::ok(0, name) << std::endl;
+        std::cout << tap13::ok(num, name) << std::endl;
     }
 
     template<typename exceptionT, typename funcT>
     void fixture::nothrows(funcT expr, std::string name)
     {
+        // decltype here so we only have to change the type in the
+        // class.  No runtime cost.
+        typename decltype(test_counter)::index_type num =
+            test_counter.new_test_number();
+
         try {
             (void)expr();
         } catch (exceptionT &e) {
             // we don't want this exception
             status = 1;
-            std::cout << tap13::not_ok(0, name) << std::endl;
+            std::cout << tap13::not_ok(num, name) << std::endl;
             return;
         } catch (...) {
             // this is okay.  catch exception and fall through to
             // below
         }
         // no exception thrown
-        std::cout << tap13::ok(0, name) << std::endl;
+        std::cout << tap13::ok(num, name) << std::endl;
     }
 
     void fixture::test()
