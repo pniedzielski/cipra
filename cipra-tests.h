@@ -379,40 +379,6 @@ namespace cipra {
 
     private:
         /**
-         * Implements the ok() method.
-         *
-         * @author Patrick M. Niedzielski
-         * @date   2012-09-08
-         * @since  1.0
-         *
-         * @tparam funcT `expr`'s type
-         *
-         * @param [in] expr Your function
-         * @param [in] name Test name
-         *
-         * @pre `decltype(expr())` is convertable to `bool`
-         */
-        template<typename funcT>
-        void ok_impl(funcT &expr, std::string &name, std::true_type);
-        /**
-         * Dummy method for if `expr()` cannot be converted to a
-         * boolean value.
-         *
-         * @author Patrick M. Niedzielski
-         * @date   2012-09-08
-         * @since  1.0
-         *
-         * @tparam funcT `expr`'s type
-         *
-         * @param [in] expr Your function
-         * @param [in] name Test name
-         *
-         * @pre `decltype(expr())` is not convertable to `bool`.
-         */
-        template<typename funcT>
-        void ok_impl(funcT &expr, std::string &name, std::false_type);
-
-        /**
          * Override this method with your test cases.  By default, no
          * tests are defined.
          *
