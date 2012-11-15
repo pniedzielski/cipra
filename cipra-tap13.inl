@@ -42,6 +42,22 @@
 namespace cipra {
     namespace tap13 {
 
+        /* A note about implementation:
+         *
+         * Each of these functions returns a details::output object,
+         * which is a simple object that contains a
+         * details::output_helper pointer.  The details::output object
+         * knows how to print its output_helper to a stream.  The
+         * exact output is produced by operator() function of the
+         * output_helper, which takes the stream as an argument and
+         * outputs its own data.
+         *
+         * The output_helper implementations are local classes in each
+         * of these functions.  The functions only declare a new such
+         * implementation class, with the proper operator() and create
+         * a details::output object using it.
+         */
+
         details::output header() {
             class impl : public details::output_helper {
                 std::ostream &operator()(std::ostream &out) {
