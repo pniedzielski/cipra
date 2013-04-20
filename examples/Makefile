@@ -33,7 +33,7 @@
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 
 CC=g++
-CFLAGS=--std=c++11
+CFLAGS=--std=c++11 -Wall -pedantic
 
 all: usage variadic
 
