@@ -56,6 +56,9 @@ in the header files; there is no need to compile cipra.
 
 @include usage.cpp <!-- see usage.cpp for an example -->
 
+You can find a tutorial on the [Tutorial page](@ref md_tutorial) or in the
+`tutorial.md` file in the `doc/` directory.
+
 ## Resources
 
   * [Home Page](https://gitorious.org/patrickniedzielski/pages/Cipra)
