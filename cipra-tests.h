@@ -39,7 +39,7 @@
 #include "cipra-tap13.h"
 
 #include <string>
-#include <iostream>
+#include <iosfwd>
 #include <type_traits>
 
 #ifdef CIPRA_CXA_ABI
@@ -47,6 +47,57 @@
 #endif
 
 namespace cipra {
+
+    /**
+     * A type trait that users can specialize to tell how to equality
+     * compare two different types.  Defaults to using `operator==`.
+     *
+     * @version 1.1
+     * @author  Patrick M. Niedzielski
+     * @date    2013-04-20
+     * @since   1.1
+     *
+     * @tparam T The left-hand side type.
+     * @tparam U The right-hand side type.
+     */
+    template <typename T, typename U>
+    struct equals_trait {
+        /**
+         * Returns whether the left hand side equals the right hand
+         * side.  Defaults to using `operator==`.
+         *
+         * @author Patrick M. Niedzielski
+         * @date   2013-04-20
+         * @since  1.1
+         *
+         * @return Whether two objects are equal.
+         */
+        static inline bool equals(const T&, const U&);
+    };
+
+    /**
+     * A type trait that users can specialize to tell how to stream an
+     * object to a `std::ostream`.  Defaults to using `operator<<`.
+     *
+     * @version 1.1
+     * @author  Patrick M. Niedzielski
+     * @date    2013-04-20
+     * @since   1.1
+     *
+     * @tparam T The type to print.
+     */
+    template <typename T>
+    struct print_trait {
+        /**
+         * Pretty-prints an object to a `std::ostream`.  Defaults to
+         * using `operator<<`.
+         *
+         * @author Patrick M. Niedzielski
+         * @date   2013-04-20
+         * @since  1.1
+         */
+        static inline std::ostream& print(std::ostream&, const T&);
+    };
 
     /**
      * The base class for any test fixtures.  To use cipra, you should

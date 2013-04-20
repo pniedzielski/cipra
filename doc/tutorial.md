@@ -303,7 +303,9 @@ The output of this code will be
 ~~~
 
 If you want to pretty-print an object using its streaming
-`operator<<()`, use the function template `explain()`.
+`operator<<()`, use the function template `explain()`.  You can also
+specialize the `cipra::print_trait` template to use a different
+function.
 
 # Convenience Test Functions
 
@@ -348,6 +350,9 @@ Running this, we get the same output as before:
 ok 1 - Five is equal to five.
 ~~~
 
+If we have two types that don't have an `operator==` function, we can
+specialize the `cipra::equal_traits` template on our types.
+
 What about our failing test?
 
 ~~~{.cpp}
@@ -356,7 +361,8 @@ is(5, 6, "Five is equal to six.");
 
 Compared to the output we got with `ok()`, a failing `is()` gives much
 better diagnostics.  You need to provide an `operator<<()` function
-for both types so it can be outputted.
+for both types so it can be outputted or specialize the
+`cipra::print_traits` template.
 
 ~~~
 1..2
@@ -367,7 +373,7 @@ not ok 1 - Five is equal to six.
 ~~~
 
 Similarly, there is an `isnt()` function template which checks whether
-the two values are not equal using their `operator!=()` function.
+the two values are not equal.
 
 # Testing Exceptions
 

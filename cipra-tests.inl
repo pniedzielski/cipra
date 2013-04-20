@@ -45,6 +45,18 @@
 
 namespace cipra {
 
+    template <typename T, typename U>
+    bool
+    equals_trait<T, U>::equals(const T& t, const U& u) {
+        return t == u;
+    }
+
+    template <typename T>
+    std::ostream&
+    print_trait<T>::print(std::ostream& out, const T& t) {
+        return out << t;
+    }
+
     std::string fixture::current_exception_name()
     {
 #ifdef CIPRA_CXA_ABI
@@ -106,7 +118,8 @@ namespace cipra {
     void fixture::explain(T object)
     {
         std::ostringstream ss;
-        ss << "    " << object;
+        ss << "    ";
+        print_trait<T>::print(ss, object);
         std::cout << tap13::diagnostic(ss.str()) << std::endl;
     }
 
@@ -165,15 +178,17 @@ namespace cipra {
         typename decltype(test_counter)::index_type num =
             test_counter.new_test_number();
 
-        if (got == expected) {
+        if (equals_trait<T, U>::equals(got, expected)) {
             std::cout << tap13::ok(num, name) << std::endl;
         } else {
             std::ostringstream ss;
-            ss << "         got: " << got;
+            ss << "         got: ";
+            print_trait<T>::print(ss, got);
             std::cout << tap13::not_ok(num, name) << std::endl
                       << tap13::diagnostic(ss.str()) << std::endl;
             ss.str(std::string());
-            ss << "    expected: " << expected;
+            ss << "    expected: ";
+            print_trait<T>::print(ss, expected);
             std::cout << tap13::diagnostic(ss.str()) << std::endl;
         }
     }
@@ -186,11 +201,12 @@ namespace cipra {
         typename decltype(test_counter)::index_type num =
             test_counter.new_test_number();
 
-        if (got != expected) {
+        if (!equals_trait<T, U>::equals(got, expected)) {
             std::cout << tap13::ok(num, name) << std::endl;
         } else {
             std::ostringstream ss;
-            ss << "    got: " << got;
+            ss << "    got: ";
+            print_trait<T>::print(ss, got);
             std::cout << tap13::not_ok(num, name) << std::endl
                       << tap13::diagnostic(ss.str()) << std::endl;
         }
