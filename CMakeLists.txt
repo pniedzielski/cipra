@@ -34,7 +34,9 @@
 
 cmake_minimum_required(VERSION 2.8)
 project(cipra)
-set(cipra_VERSION 1.1)
+set(cipra_VERSION_MAJOR 1)
+set(cipra_VERSION_MINOR 1)
+set(cipra_VERSION "${cipra_VERSION_MAJOR}.${cipra_VERSION_MINOR}")
 
 include(GNUInstallDirs)
 
@@ -48,6 +50,32 @@ install(FILES AUTHORS.md
               INSTALL.md
               README.md
         DESTINATION ${CMAKE_INSTALL_DOCDIR})
+
+option(WITH_EXAMPLES "Build examples." ON)
+if(WITH_EXAMPLES)
+  include_directories(include SYSTEM)
+
+  # How to compile in C++11 on this compiler?
+  include (CheckCXXCompilerFlag)
+  set (flags_to_check "--std=c++11" "--std=c++0x" "--std=gnu++11")
+  foreach (flag_to_check ${flags_to_check})
+    # check_cpp11_flag_*, must be alphanumeric/underscores
+    string (REGEX REPLACE "[^A-Z a-z 0-9]" "_" flag_variable ${flag_to_check})
+    string (STRIP "${flag_variable}" flag_variable)
+    set (flag_variable "check_cpp11_compiles_with_flag_${flag_variable}")
+
+    check_cxx_compiler_flag ("${flag_to_check}" ${flag_variable})
+    if (${flag_variable})
+      set (HUMMSTRUMM_ENGINE_HAVE_CPP11_SUPPORT ON)
+      message (STATUS "Checking that compiler supports C++11 - supported")
+      set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${flag_to_check}")
+      break ()
+    endif ()
+  endforeach ()
+
+  add_executable(usage "examples/usage.cpp")
+  add_executable(variadic "examples/variadic.cpp")
+endif()
 
 option(WITH_PKGCONFIG "Create and install a pkg-config file." ON)
 if(WITH_PKGCONFIG)
@@ -67,7 +95,7 @@ if(WITH_PKGCONFIG)
     if("${path}" STREQUAL "${CMAKE_INSTALL_FULL_LIBDIR}/pkgconfig")
       set(pkgconfig_install_path "${CMAKE_INSTALL_FULL_LIBDIR}/pkgconfig")
       break()
-    elseif ("${path}" STREQUAL "${CMAKE_INSTALL_FULL_DATADIR}/pkgconfig")
+    elseif("${path}" STREQUAL "${CMAKE_INSTALL_FULL_DATADIR}/pkgconfig")
       set(pkgconfig_install_path "${CMAKE_INSTALL_FULL_LIBDIR}/pkgconfig")
       break()
     endif()
@@ -79,18 +107,40 @@ if(WITH_PKGCONFIG)
 endif()
 
 option(WITH_DOXYGEN "Create and install doxygen HTML documentation." ON)
-if (WITH_DOXYGEN)
+if(WITH_DOXYGEN)
   find_package(Doxygen 1.8.2 REQUIRED)
   configure_file(${cipra_SOURCE_DIR}/Doxyfile.in
                  ${cipra_BINARY_DIR}/Doxyfile
                  @ONLY)
-  add_custom_target (doc ALL
-                     ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-                     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-                     COMMENT "Generating API documentation with Doxygen"
-                     VERBATIM)
-  install (DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/html/
-           DESTINATION ${CMAKE_INSTALL_DOCDIR}/api)
-  install (DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/man/
-           DESTINATION ${CMAKE_INSTALL_MANDIR})
+  add_custom_target(doc ALL
+                    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                    COMMENT "Generating API documentation with Doxygen"
+                    VERBATIM)
+  install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/html/
+          DESTINATION ${CMAKE_INSTALL_DOCDIR}/api)
+  install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/man/
+          DESTINATION ${CMAKE_INSTALL_MANDIR})
 endif()
+
+
+
+
+include(InstallRequiredSystemLibraries)
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "C++11 unit testing framework based on Perl's Test::More module.")
+set(CPACK_PACKAGE_VENDOR "Patrick M. Niedzielski")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${cipra_SOURCE_DIR}/README.md")
+set(CPACK_RESOURCE_FILE_LICENSE "${cipra_SOURCE_DIR}/COPYING.md")
+set(CPACK_PACKAGE_VERSION "${cipra_VERSION}.0")
+set(CPACK_PACKAGE_VERSION_MAJOR "${cipra_VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${cipra_VERSION_MINOR}")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "cipra-${cipra_VERSION}")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "cipra ${cipra_VERSION}")
+set(CPACK_SOURCE_IGNORE_FILES "/.git/"
+                              "/build/"
+                              "~$"
+                              "~.*"
+                              "${CPACK_SOURCE_IGNORE_FILES}")
+
+include(CPack)

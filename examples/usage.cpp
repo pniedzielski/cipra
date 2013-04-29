@@ -9,8 +9,8 @@
  */
 
 // Uncomment on GCC and other compilers that support abi:: functions.
-// #define CIPRA_CXA_ABI
-#include "../cipra.h"
+//#define CIPRA_CXA_ABI
+#include <cipra.hpp>
 
 int main(int argc, char* argv[])
 {

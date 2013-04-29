@@ -10,7 +10,7 @@
 
 #define CIPRA_USE_VARIADIC_TEMPLATES
 // #define CIPRA_CXA_ABI
-#include "../cipra.h"
+#include <cipra.hpp>
 
 struct will_throw {
     will_throw(int i, char c) {
