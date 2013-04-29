@@ -95,6 +95,8 @@ namespace cipra {
          * @author Patrick M. Niedzielski
          * @date   2013-04-20
          * @since  1.1
+         *
+         * @return The output stream.
          */
         static inline std::ostream& print(std::ostream&, const T&);
     };
