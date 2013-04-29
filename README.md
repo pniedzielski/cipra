@@ -26,6 +26,7 @@ reference:
     * `COPYING.bsd`:  3-clause BSD-style license.
     * `COPYING.ccby`: CC-BY 3.0 US license.
   * [AUTHORS](@ref md_AUTHORS): Author(s) of the software.
+  * [NEWS](@ref md_NEWS): Changes between releases.
 
 ## Usage
 
