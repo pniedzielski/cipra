@@ -33,26 +33,22 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CIPRA_COUNTER_INL
-#define CIPRA_COUNTER_INL
+#ifndef CIPRA_HPP
+#define CIPRA_HPP
 
-#include <atomic>
+/**
+ * @namespace cipra
+ * Holds all symbols in the cipra Unit Testing Framework.
+ */
+/**
+ * @namespace cipra::tap13
+ * Holds symbols related to printing out TAP version 13 output.  The
+ * user should generally not need these functions, but they are
+ * provided in case the user does need them.
+ */
 
-namespace cipra {
+#include "impl/tap13.hpp"
+#include "impl/counter.hpp"
+#include "impl/tests.hpp"
 
-    template <typename integralT>
-    counter<integralT>::counter()
-    {
-        count.store(1);
-    }
-
-
-    template <typename integralT>
-    typename counter<integralT>::index_type
-    counter<integralT>::new_test_number()
-    {
-        return count++;
-    }
-}
-
-#endif
+#endif // #ifndef CIPRA_HPP

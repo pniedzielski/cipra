@@ -33,10 +33,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CIPRA_TESTS_H
-#define CIPRA_TESTS_H
+#ifndef CIPRA_TESTS_HPP
+#define CIPRA_TESTS_HPP
 
-#include "cipra-tap13.h"
+#include "tap13.hpp"
 
 #include <string>
 #include <iosfwd>
@@ -526,6 +526,6 @@ namespace cipra {
     };
 }
 
-#include "cipra-tests.inl"
+#include "tests.ipp"
 
-#endif
+#endif // #ifdef CIPRA_TESTS_HPP

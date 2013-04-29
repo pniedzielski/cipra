@@ -33,10 +33,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CIPRA_TESTS_INL
-#define CIPRA_TESTS_INL
+#ifndef CIPRA_TESTS_IPP
+#define CIPRA_TESTS_IPP
 
-#include "cipra-tap13.h"
+#include "tap13.hpp"
 
 #include <iostream>
 #include <sstream>
@@ -361,4 +361,4 @@ namespace cipra {
 
 }
 
-#endif
+#endif // #ifndef CIPRA_TESTS_IPP

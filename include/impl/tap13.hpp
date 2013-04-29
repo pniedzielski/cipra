@@ -33,8 +33,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CIPRA_TAP13_H
-#define CIPRA_TAP13_H
+#ifndef CIPRA_TAP13_HPP
+#define CIPRA_TAP13_HPP
 
 #include <string>
 #include <iostream>
@@ -236,6 +236,6 @@ namespace cipra {
     }
 }
 
-#include "cipra-tap13.inl"
+#include "tap13.ipp"
 
-#endif
+#endif // #ifdef CIPRA_TAP13_HPP

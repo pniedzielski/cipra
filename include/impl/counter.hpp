@@ -33,8 +33,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CIPRA_COUNTER_H
-#define CIPRA_COUNTER_H
+#ifndef CIPRA_COUNTER_HPP
+#define CIPRA_COUNTER_HPP
 
 #include <type_traits>
 #include <atomic>
@@ -95,6 +95,6 @@ namespace cipra {
     };
 }
 
-#include "cipra-counter.inl"
+#include "counter.ipp"
 
-#endif
+#endif // #ifdef CIPRA_COUNTER_HPP
