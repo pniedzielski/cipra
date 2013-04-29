@@ -49,6 +49,7 @@ install(FILES AUTHORS.md
               COPYING.md
               INSTALL.md
               README.md
+              NEWS.md
         DESTINATION ${CMAKE_INSTALL_DOCDIR})
 
 option(WITH_EXAMPLES "Build examples." ON)
