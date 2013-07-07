@@ -44,6 +44,6 @@ in the header files; there is no need to compile cipra.
 
 ## Resources
 
-  * [Home Page](https://sourceforge.net/projects/cipra/)
+  * [Home Page](https://cipra.sourceforge.net/)
   * [Git Repo](https://sourceforge.net/p/cipra/code/ci/master/tree/)
   * [TAP Specification Website](http://testanything.org/)
