@@ -435,8 +435,7 @@ namespace cipra {
          */
         template<typename exceptionT, typename funcT>
         void nothrows(funcT expr, std::string name = std::string(""));
-#ifdef CIPRA_USE_VARIADIC_TEMPLATES
-        /**
+		/**
          * Assert that the constructor of an object can be constructed
          * without throwing an exception of any type.
          *
@@ -461,6 +460,14 @@ namespace cipra {
          *
          * @todo Implement the aborting of subtests/tests.
          */
+#if _MSC_VER >= 1700 && _MSC_VER < 1800 // use implementation defined macros
+#define NEW_OK(TEMPLATE_LIST, PADDING_LIST, LIST, COMMA, X1, X2, X3, X4) \
+        template<typename T COMMA LIST(_CLASS_TYPE)>                     \
+        T new_ok(LIST(_TYPE_REFREF_ARG));
+
+        _VARIADIC_EXPAND_0X(NEW_OK, , , , )
+#undef NEW_OK
+#else
         template<typename T, typename... argsT>
         T new_ok(argsT&&... args);
 #endif

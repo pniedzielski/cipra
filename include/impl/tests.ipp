@@ -43,6 +43,12 @@
 #include <string>
 #include <type_traits>
 
+#ifdef _MSC_VER
+#define MSVC_NO_TYPENAME
+#else
+#define MSVC_NO_TYPENAME typename
+#endif
+
 namespace cipra {
 
     template <typename T, typename U>
@@ -128,7 +134,8 @@ namespace cipra {
     {
         // decltype here so we only have to change the type in the
         // class.  No runtime cost.
-        typename decltype(test_counter)::index_type num =
+        typedef decltype(test_counter) counter_type;
+        MSVC_NO_TYPENAME counter_type::index_type num =
             test_counter.new_test_number();
 
         // static_cast<bool>(expr()) should work
@@ -157,7 +164,8 @@ namespace cipra {
     {
         // decltype here so we only have to change the type in the
         // class.  No runtime cost.
-        typename decltype(test_counter)::index_type num =
+		typedef decltype(test_counter) counter_type;
+        MSVC_NO_TYPENAME counter_type::index_type num =
             test_counter.new_test_number();
 
         // They passed in some value that's boolean.  This is a
@@ -175,7 +183,8 @@ namespace cipra {
     {
         // decltype here so we only have to change the type in the
         // class.  No runtime cost.
-        typename decltype(test_counter)::index_type num =
+        typedef decltype(test_counter) counter_type;
+        MSVC_NO_TYPENAME counter_type::index_type num =
             test_counter.new_test_number();
 
         if (equals_trait<T, U>::equals(got, expected)) {
@@ -198,7 +207,8 @@ namespace cipra {
     {
         // decltype here so we only have to change the type in the
         // class.  No runtime cost.
-        typename decltype(test_counter)::index_type num =
+        typedef decltype(test_counter) counter_type;
+        MSVC_NO_TYPENAME counter_type::index_type num =
             test_counter.new_test_number();
 
         if (!equals_trait<T, U>::equals(got, expected)) {
@@ -217,7 +227,8 @@ namespace cipra {
     {
         // decltype here so we only have to change the type in the
         // class.  No runtime cost.
-        typename decltype(test_counter)::index_type num =
+        typedef decltype(test_counter) counter_type;
+        MSVC_NO_TYPENAME counter_type::index_type num =
             test_counter.new_test_number();
 
         try {
@@ -238,12 +249,13 @@ namespace cipra {
     {
         // decltype here so we only have to change the type in the
         // class.  No runtime cost.
-        typename decltype(test_counter)::index_type num =
+        typedef decltype(test_counter) counter_type;
+        MSVC_NO_TYPENAME counter_type::index_type num =
             test_counter.new_test_number();
         
         try {
             (void)expr();
-        } catch (exceptionT &e) {
+        } catch (exceptionT &) {
             // we expect this exception.
             std::cout << tap13::ok(num, name) << std::endl;
             return;
@@ -266,7 +278,8 @@ namespace cipra {
     {
         // decltype here so we only have to change the type in the
         // class.  No runtime cost.
-        typename decltype(test_counter)::index_type num =
+        typedef decltype(test_counter) counter_type;
+        MSVC_NO_TYPENAME counter_type::index_type num =
             test_counter.new_test_number();
         
         try {
@@ -288,12 +301,13 @@ namespace cipra {
     {
         // decltype here so we only have to change the type in the
         // class.  No runtime cost.
-        typename decltype(test_counter)::index_type num =
+        typedef decltype(test_counter) counter_type;
+        MSVC_NO_TYPENAME counter_type::index_type num =
             test_counter.new_test_number();
 
         try {
             (void)expr();
-        } catch (exceptionT &e) {
+        } catch (exceptionT &) {
             // we don't want this exception
             std::cout << tap13::not_ok(num, name) << std::endl;
             return;
@@ -305,7 +319,31 @@ namespace cipra {
         std::cout << tap13::ok(num, name) << std::endl;
     }
 
-#ifdef CIPRA_USE_VARIADIC_TEMPLATES
+#if _MSC_VER >= 1700 && _MSC_VER < 1800 // use implementation defined macros
+#define NEW_OK(TEMPLATE_LIST, PADDING_LIST, LIST, COMMA, X1, X2, X3, X4)  \
+    template<typename T COMMA LIST(_CLASS_TYPE)>                          \
+    T fixture::new_ok(LIST(_TYPE_REFREF_ARG))                             \
+    {                                                                     \
+        typedef decltype(test_counter) counter_type;                      \
+        MSVC_NO_TYPENAME counter_type::index_type num =                   \
+            test_counter.new_test_number();                               \
+                                                                          \
+        try {                                                             \
+            T t = T(LIST(_FORWARD_ARG));                                  \
+            std::cout << tap13::ok(num, "") << std::endl;                 \
+            return std::move(t);                                          \
+        } catch (...) {                                                   \
+            std::cout << tap13::not_ok(num, "") << std::endl              \
+                      << tap13::diagnostic("    got exception of type " + \
+                                           current_exception_name())      \
+                      << std::endl;                                       \
+            throw;                                                        \
+        }                                                                 \
+    }
+
+    _VARIADIC_EXPAND_0X(NEW_OK, , , , )
+#undef NEW_OK
+#else
     template<typename T, typename... argsT>
     T fixture::new_ok(argsT&&... args)
     {
@@ -334,7 +372,8 @@ namespace cipra {
     {
         // decltype here so we only have to change the type in the
         // class.  No runtime cost.
-        typename decltype(test_counter)::index_type num =
+        typedef decltype(test_counter) counter_type;
+        MSVC_NO_TYPENAME counter_type::index_type num =
             test_counter.new_test_number();
         
         std::cout << tap13::ok(num, name) << std::endl;
@@ -344,7 +383,8 @@ namespace cipra {
     {
         // decltype here so we only have to change the type in the
         // class.  No runtime cost.
-        typename decltype(test_counter)::index_type num =
+        typedef decltype(test_counter) counter_type;
+        MSVC_NO_TYPENAME counter_type::index_type num =
             test_counter.new_test_number();
         
         std::cout << tap13::not_ok(num, name) << std::endl;
@@ -360,5 +400,7 @@ namespace cipra {
     }
 
 }
+
+#undef MSVC_NO_TYPENAME
 
 #endif // #ifndef CIPRA_TESTS_IPP

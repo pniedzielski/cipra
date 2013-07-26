@@ -509,9 +509,8 @@ However, if `w` failed to construct the first time, it will fail to
 construct again, and we'll have leaked an exception.
 
 `cipra` provides a function template specifically to test
-constructors.  To turn it on, be sure you define the preprocessor
-symbol `CIPRA_USE_VARIADIC_TEMPLATES` before including `cipra.h`.  The
-function template, called `new_ok`, has the following signature:
+constructors.  The function template, called `new_ok`, has the
+following signature:
 
 ~~~{.cpp}
 template<typename T, typename... argsT> T new_ok(argsT&&... args);
@@ -525,7 +524,6 @@ the test program.  This function requires that `T` either be
 example is `Copyable`, we can simplify our test snippet:
 
 ~~~{.cpp}
-// earlier we #define CIPRA_USE_VARIADIC_TEMPLATES
 throws([](){ value<double> v{1.0, -0.5}; },
        "Can't have negative error.");
 auto w = new_ok<value<double>>(1.0, 0.5);
