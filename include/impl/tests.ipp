@@ -315,9 +315,9 @@ namespace cipra {
             test_counter.new_test_number();
 
         try {
-            T&& t = T(std::forward<argsT>(args)...);
+            T t = T(std::forward<argsT>(args)...);
             std::cout << tap13::ok(num, "") << std::endl;
-            return t;
+            return std::move(t);
         } catch (...) {
             std::cout << tap13::not_ok(num, "") << std::endl
                       << tap13::diagnostic("    got exception of type " +
