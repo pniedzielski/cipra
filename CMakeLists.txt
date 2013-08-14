@@ -35,8 +35,8 @@
 cmake_minimum_required(VERSION 2.8)
 project(cipra)
 set(cipra_VERSION_MAJOR 1)
-set(cipra_VERSION_MINOR 1)
-set(cipra_VERSION "${cipra_VERSION_MAJOR}.${cipra_VERSION_MINOR}")
+set(cipra_VERSION_MINOR 2)
+set(cipra_VERSION "${cipra_VERSION_MAJOR}.${cipra_VERSION_MINOR}.0")
 
 include(GNUInstallDirs)
 
@@ -125,6 +125,19 @@ if(WITH_DOXYGEN)
 endif()
 
 
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+  cipraConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/cipraConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/cipra/cmake
+  PATH_VARS CMAKE_INSTALL_INCLUDEDIR)
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/cipraConfigVersion.cmake
+  VERSION "@cipra_VERSION"
+  COMPATIBILITY SameMajorVersion)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cipraConfig.cmake
+              ${CMAKE_CURRENT_BINARY_DIR}/cipraConfigVersion.cmake
+        DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/cipra/cmake)
+
 
 
 include(InstallRequiredSystemLibraries)
@@ -132,7 +145,7 @@ set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "C++11 unit testing framework based on Per
 set(CPACK_PACKAGE_VENDOR "Patrick M. Niedzielski")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${cipra_SOURCE_DIR}/README.md")
 set(CPACK_RESOURCE_FILE_LICENSE "${cipra_SOURCE_DIR}/COPYING.md")
-set(CPACK_PACKAGE_VERSION "${cipra_VERSION}.0")
+set(CPACK_PACKAGE_VERSION "${cipra_VERSION}")
 set(CPACK_PACKAGE_VERSION_MAJOR "${cipra_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${cipra_VERSION_MINOR}")
 set(CPACK_SOURCE_PACKAGE_FILE_NAME "cipra-${cipra_VERSION}")

@@ -1,6 +1,6 @@
 # cipra Unit Testing Framework
 @mainpage
-![Version 1.1](screenshot.png)
+![Version 1.2](screenshot.png)
 
 cipra is a simple, TAP-compatible Unit Testing Framework for C++.
 cipra is Free and Open Source Software, released under a 3-clause
