@@ -1,5 +1,14 @@
 # Release Changes
 
+## Version 1.2
+
+  * Add support for variadic templates in MSVC11.
+  * CIPRA_USE_VARIADIC_TEMPLATES no longer has any effect; variadics are on by
+    default (even in MSVC11, which doesn't have language variadic templates).
+  * Fix to new_ok() on move only types.
+  * Add a CMake Config.cmake file so CMake projects can find cipra if it is
+    installed.
+
 ## Version 1.1
 
   * Switched to CMake build system.
