@@ -9,6 +9,11 @@
   * Add a CMake Config.cmake file so CMake projects can find cipra if it is
     installed.
 
+### Bugfix 1.2.1
+
+  * Fixed bug in CMake Config.cmake file that prevents cipra from being found
+    when a specific version is requested (even if the version is present).
+
 ## Version 1.1
 
   * Switched to CMake build system.

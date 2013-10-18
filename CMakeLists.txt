@@ -36,7 +36,8 @@ cmake_minimum_required(VERSION 2.8)
 project(cipra)
 set(cipra_VERSION_MAJOR 1)
 set(cipra_VERSION_MINOR 2)
-set(cipra_VERSION "${cipra_VERSION_MAJOR}.${cipra_VERSION_MINOR}.0")
+set(cipra_VERSION_BUGFIX 1)
+set(cipra_VERSION "${cipra_VERSION_MAJOR}.${cipra_VERSION_MINOR}.${cipra_VERSION_BUGFIX}")
 
 include(GNUInstallDirs)
 
