@@ -132,7 +132,7 @@ configure_package_config_file(
   PATH_VARS CMAKE_INSTALL_INCLUDEDIR)
 write_basic_package_version_file(
   ${CMAKE_CURRENT_BINARY_DIR}/cipraConfigVersion.cmake
-  VERSION "@cipra_VERSION"
+  VERSION "@cipra_VERSION@"
   COMPATIBILITY SameMajorVersion)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cipraConfig.cmake
               ${CMAKE_CURRENT_BINARY_DIR}/cipraConfigVersion.cmake
