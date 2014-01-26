@@ -99,7 +99,7 @@ namespace cipra {
     fixture::fixture()
     {}
 
-    fixture::fixture(const fixture &t)
+    fixture::fixture(const fixture &)
     {}
 
     void fixture::plan(int total)
